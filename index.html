@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Aman Swar</title>
+  <!-- Scripts and CSS links -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+  <style>
+    /* Additional styling for the swipe down arrow */
+    .swipe-down {
+      position: absolute;
+      bottom: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 20;
+    }
+    .swipe-down svg {
+      width: 40px;
+      height: 40px;
+      fill: #4A90E2;
+    }
+  </style>
+</head>
+<body class="bg-black text-white">
+
+  <!-- Particles Background (covers entire page) -->
+  <div id="particles-js" class="fixed inset-0 -z-10"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed w-full z-50 bg-black bg-opacity-90 backdrop-filter backdrop-blur-sm">
+    <div class="container mx-auto px-6 py-3">
+      <div class="flex items-center justify-between">
+        <span class="text-2xl font-bold">Aman Swar</span>
+        <div class="hidden md:flex space-x-8">
+          <a href="#home" class="hover:text-blue-400 transition-colors">Home</a>
+          <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+          <a href="projects.html" class="hover:text-blue-400 transition-colors">Projects</a>
+          <a href="research.html" class="hover:text-blue-400 transition-colors">Research</a>
+          <a href="#skills" class="hover:text-blue-400 transition-colors">Skills</a>
+          <!-- <a href="#experience" class="hover:text-blue-400 transition-colors">Experience</a> -->
+          <a href="blog.html" class="hover:text-blue-400 transition-colors">Blog</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="h-screen flex items-center justify-center relative">
+    <div class="text-center z-10">
+      <h1 class="text-6xl font-bold mb-4">AMAN SWAR</h1>
+      <p class="text-2xl text-black-400 mb-1">
+        AI Systems Engineer & Researcher building high-performance ML frameworks, self-supervised learning libraries, and next-gen AI infrastructure
+      </p>
+      <p class="text-xl text-black-400 mb-8">
+        pushing the limits of optimization, scalability, and intelligence.
+      </p>
+      <a href="#projects" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors">
+        View My Work
+      </a>
+    </div>
+    <!-- Swipe Down Animation -->
+    <div class="swipe-down">
+      <!-- Simple SVG arrow icon -->
+      <svg viewBox="0 0 24 24">
+        <path d="M12 16.5l-6-6 1.41-1.41L12 13.67l4.59-4.58L18 10.5z"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- About Me Section -->
+  <section id="about" class="py-20 bg-black-800">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-12">
+        <!-- Profile Image Column -->
+        <div class="lg:w-1/3">
+          <div class="relative">
+            <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-blue-500 shadow-lg mx-auto">
+              <img src="assets/faltu.png" alt="Aman Swar" class="w-full h-full object-cover" />
+            </div>
+            <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-blue-600 px-6 py-2 rounded-full">
+              <p class="text-sm font-semibold">AI Research Engineer</p>
+            </div>
+          </div>
+          <!-- Social Links -->
+          <div class="flex justify-center mt-12 space-x-6">
+            <a href="https://github.com/AmanSwar" target="_blank" class="text-gray-100 hover:text-blue-400 transition-colors">
+              <!-- GitHub icon -->
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+            </a>
+            <a href="https://www.linkedin.com/in/aman-swar-395826278" target="_blank" class="text-gray-100 hover:text-blue-400 transition-colors">
+              <!-- LinkedIn icon -->
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg>
+            </a>
+            <a href="https://x.com/Compile_Conquer" target="_blank" class="text-gray-100 hover:text-blue-400 transition-colors">
+              <!-- Twitter/X icon -->
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- About Content Column -->
+        <div class="lg:w-2/3">
+          <h2 class="text-4xl font-bold mb-8">About Me</h2>
+          <div class="space-y-6 text-black-300">
+            <p class="leading-relaxed">
+              I’m an AI Systems Engineer & Researcher who’s downright obsessed with building stuff that makes machines think harder and run faster. I mess around with high-powered machine learning frameworks, cooking up various deep learning libraries and dreaming up next-gen AI infrastructure that can handle whatever I throw at them. I love getting my hands dirty with the low-level guts—think low-level optimizations, CUDA and GPU programming wizardry—and scaling AI so it doesn’t just crawl, it flies.
+              Outside the tech cave, I’m a huge cheerleader for open-source AI. I’m always tossing ideas into the wild—blogs, projects, whatever—because sharing’s half the fun. My big dream? Making AI accessible to all.
+            </p>
+          </div>
+          <!-- Quick Facts -->
+          <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="text-center">
+              <div class="text-3xl font-bold text-blue-400">2+</div>
+              <div class="text-sm text-gray-100">Years Coding</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-blue-400">5+</div>
+              <div class="text-sm text-gray-100">Major Projects</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-blue-400">2</div>
+              <div class="text-sm text-gray-100">Ongoing Research</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl font-bold text-blue-400">2</div>
+              <div class="text-sm text-gray-100">Open Source</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Skills Section -->
+  <section id="skills" class="py-20 bg-black-800">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-bold mb-12 text-center">Technical Skills</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Languages -->
+        <div class="skill-card bg-black-900 p-6 rounded-lg">
+          <h3 class="text-xl font-bold mb-4">Programming Languages</h3>
+          <div class="space-y-3">
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Python</span>
+                <span>80%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>C++</span>
+                <span>60%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>C</span>
+                <span>40%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 35%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>CUDA</span>
+                <span>40%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 35%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- AI & ML -->
+        <div class="skill-card bg-black-900 p-6 rounded-lg">
+          <h3 class="text-xl font-bold mb-4">AI/ML frameworks</h3>
+          <div class="space-y-3">
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>PyTorch</span>
+                <span>80%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>TensorFlow</span>
+                <span>20%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 20%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Hugging Face Transformers</span>
+                <span>40%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 40%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>SciKit-Learn</span>
+                <span>30%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 30%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Systems -->
+        <div class="skill-card bg-black-900 p-6 rounded-lg">
+          <h3 class="text-xl font-bold mb-4">Parallel Programming</h3>
+          <div class="space-y-3">
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>CUDA Programming</span>
+                <span>60%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>cuBLAS</span>
+                <span>20%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 10%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>OpenMP</span>
+                <span>5%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 5%"></div>
+              </div>  
+            </div>
+          </div>
+        </div>
+        <!-- ML -->
+        <div class="skill-card bg-black-900 p-6 rounded-lg">
+          <h3 class="text-xl font-bold mb-4">Machine Learning</h3>
+          <div class="space-y-3">
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Deep Learning</span>
+                <span>70%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 70%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Natural Language Processing</span>
+                <span>60%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Computer Vision</span>
+                <span>70%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 70%"></div>
+              </div>  
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Representation Learning</span>
+                <span>80%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 80%"></div>
+              </div>  
+            </div>
+          </div>
+        </div>
+        <!-- Optimization -->
+        <div class="skill-card bg-black-900 p-6 rounded-lg">
+          <h3 class="text-xl font-bold mb-4">Computer Science Fundamentals</h3>
+          <div class="space-y-3">
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Algorithm</span>
+                <span>40%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 40%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Data Structures</span>
+                <span>60%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+              </div>
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Operating Systems</span>
+                <span>60%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 60%"></div>
+              </div>  
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Computer Architecture and Organization</span>
+                <span>70%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 70%"></div>
+              </div>  
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>GPU Architecture</span>
+                <span>70%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 70%"></div>
+              </div>  
+            </div>
+            <div class="skill-bar">
+              <div class="flex justify-between mb-1">
+                <span>Parallel Programming</span>
+                <span>40%</span>
+              </div>
+              <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="bg-blue-600 h-2 rounded-full" style="width: 40%"></div>
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="py-20 bg-black-800">
+    <div class="container mx-auto px-6">
+      <!-- Flex container for heading and button -->
+      <div class="flex items-center justify-center mb-12 space-x-4 relative z-50">
+        <h2 class="text-4xl font-bold">Featured Projects</h2>
+        <a href="projects.html" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-colors text-lg">
+          SEE IN DETAIL
+        </a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Project Card 1 -->
+        <div class="project-card bg-black-00 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+          <img src="assets/kernellablogo.png" alt="Project 1" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">KernelLab</h3>
+            <p class="text-gray-400 mb-4">
+              Making GPUs go Brrrrr.... High-Performance CUDA Kernels for Deep Learning & HPC
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">C++</span>
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+            </div>
+            <!-- GitHub Button for this project -->
+            <div class="mt-4 text-center">
+              <a href="https://github.com/AmanSwar/KernelLab" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors">
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 2 -->
+        <div class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+          <img src="assets/DRgrades.png" alt="Project 2" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">RetinaSys</h3>
+            <p class="text-gray-400 mb-4">
+              Deep Learning pipeline for detecting Diabetic Retinopathy
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">PyTorch</span>
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">Computer Vision</span>
+            </div>
+            <!-- GitHub Button for this project -->
+            <div class="mt-4 text-center">
+              <a href="https://github.com/AmanSwar/DR-detection" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors">
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Project Card 3 -->
+        <div class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+          <img src="assets/searchsplogo.png" alt="Project 3" class="w-full h-48 object-cover" />
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">SearchSphere</h3>
+            <p class="text-gray-400 mb-4">
+              Windows Search, but it actually works
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">Python</span>
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">Transformers</span>
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">FAISS</span>
+              <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">PyTorch</span>
+            </div>
+            <!-- GitHub Button for this project -->
+            <div class="mt-4 text-center">
+              <a href="https://github.com/AmanSwar/SearchSphere" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full transition-colors">
+                View on GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="py-20 bg-black-800">
+    <div class="container mx-auto px-6">
+      <div class="flex items-center justify-center mb-12 space-x-4 relative z-50">
+        <h2 class="text-4xl font-bold">RESEARCH</h2>
+        <a href="research.html" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-colors text-lg">
+          SEE IN DETAIL
+        </a>
+      </div>
+      
+      <div class="space-y-8">
+        <!-- Experience Item 1 -->
+        <div class="experience-card bg-black-00 p-6 rounded-lg">
+          <div class="flex flex-wrap justify-between items-start mb-4">
+            <div>
+              <h3 class="text-xl font-bold">
+                RetinaSys: A Real-Time, Interpretable Self-Supervised Framework for Generalized Diabetic Retinopathy Detection
+              </h3>
+              <p class="text-blue-400"></p>
+            </div>
+            <span class="text-gray-400">September 2024 - present</span>
+          </div>
+          <ul class="list-disc list-inside text-gray-400 space-y-2">
+            <li>Research under Dr.K.Vijayalakshmi</li>
+            <li>
+              A novel system for the detection of diabetic retinopathy designed to address key gaps. RetinaSys is not only about a new model but also integrates explainable AI (xAI) for interpretable decision-making, generalizes across diverse demographics through robust training on varied datasets, and is optimized for real-time deployment in resource-constrained environments.
+            </li>
+            <li>Hoping to publish paper in top-tier conferences</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JS for particles and animations -->
+  <script>
+    // Initialize particles.js for full-page background
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: '#4A90E2' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: false },
+        size: { value: 3, random: true },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#4A90E2',
+          opacity: 0.4,
+          width: 1
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: false,
+          straight: false,
+          out_mode: 'out',
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'repulse' },
+          onclick: { enable: true, mode: 'push' },
+          resize: true
+        },
+        modes: {
+          repulse: { distance: 100, duration: 0.4 },
+          push: { particles_nb: 4 }
+        }
+      },
+      retina_detect: true
+    });
+
+    // Initialize GSAP animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // About section animations
+    gsap.from('#about .lg\\:w-1\\/3', {
+      scrollTrigger: {
+        trigger: '#about',
+        start: 'top center',
+        toggleActions: 'play none none reverse'
+      },
+      x: -100,
+      opacity: 0,
+      duration: 1
+    });
+
+    gsap.from('#about .lg\\:w-2\\/3', {
+      scrollTrigger: {
+        trigger: '#about',
+        start: 'top center',
+        toggleActions: 'play none none reverse'
+      },
+      x: 100,
+      opacity: 0,
+      duration: 1
+    });
+
+    // Animate project cards
+    gsap.utils.toArray('.project-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom-=100',
+          toggleActions: 'play none none reverse'
+        },
+        y: 100,
+        opacity: 0,
+        duration: 0.8,
+        delay: i * 0.2
+      });
+    });
+
+    // Animate skill bars
+    gsap.utils.toArray('.skill-bar').forEach((bar) => {
+      const progressBar = bar.querySelector('.bg-blue-600');
+      gsap.from(progressBar, {
+        scrollTrigger: {
+          trigger: bar,
+          start: 'top bottom-=50',
+          toggleActions: 'play none none reverse'
+        },
+        width: '0%',
+        duration: 1.5,
+        ease: 'power2.out'
+      });
+    });
+
+    // Animate experience cards
+    gsap.utils.toArray('.experience-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top bottom-=100',
+          toggleActions: 'play none none reverse'
+        },
+        x: i % 2 === 0 ? -100 : 100,
+        opacity: 0,
+        duration: 0.8
+      });
+    });
+
+    // Swipe down arrow animation (swipe like in subway surfers)
+    gsap.to('.swipe-down', {
+      y: 10,
+      repeat: -1,
+      yoyo: true,
+      ease: 'power1.inOut',
+      duration: 0.6
+    });
+  </script>
+</body>
+</html>

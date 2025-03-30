@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projects | AI Researcher</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Include particles.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  </head>
+  <body class="bg-black text-white">
+    <!-- Full-page Particles Background -->
+    <div id="particles-js" class="fixed inset-0 -z-10"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-black bg-opacity-90 backdrop-filter backdrop-blur-sm">
+      <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+          <span class="text-2xl font-bold">AI.Research</span>
+          <div class="hidden md:flex space-x-8">
+            <a href="index.html" class="hover:text-blue-400 transition-colors">Home</a>
+            <a href="projects.html" class="text-blue-400">Projects</a>
+            <a href="research.html" class="hover:text-blue-400 transition-colors">Research</a>
+            <a href="blog.html" class="hover:text-blue-400 transition-colors">Blog</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-16">
+      <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl font-bold mb-4">Project Showcase</h1>
+        <p class="text-xl text-gray-400">
+          Exploring the intersection of AI, Systems, and Innovation
+        </p>
+      </div>
+    </header>
+
+    <!-- Projects Column Section -->
+    <section class="py-12">
+      <div class="container mx-auto px-6">
+        <!-- Project Card 1: KernelLab -->
+        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+          <img
+            src="assets/kernellablogo.png"
+            alt="KernelLab"
+            class="w-full md:w-1/3 h-full object-cover"
+          />
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <h3 class="text-3xl font-bold mb-4">KernelLab</h3>
+              <p class="text-black-00 mb-6">
+                KernelLab is a collection of highly optimized CUDA kernels designed for deep learning, high-performance computing (HPC), and general-purpose GPU acceleration. Each kernel includes multiple levels of optimization—from naïve implementations to shared memory, warp-level, vectorized, and tensor-core optimized versions.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">C++</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+              </div>
+
+              <!-- Detailed description from GitHub README -->
+              <div class="text-white">
+                <h4 class="text-2xl font-bold mt-8 mb-4">📌 Implemented Kernels &amp; Optimizations</h4>
+
+                <!-- Convolution Kernels -->
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Convolution Kernels</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th class="px-4 py-2 border">Kernel</th>
+                        <th class="px-4 py-2 border">Optimization Levels</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">2D Convolution (Conv2D)</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Direct element-wise computation)<br />
+                          2️⃣ <strong>Tiled Shared Memory</strong> (Minimizing global memory access)<br />
+                          3️⃣ <strong>Memory Coalescing</strong> (Optimized memory access patterns)<br />
+                          4️⃣ <strong>Tensor Cores</strong> (Using WMMA for fused matrix multiplications)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">3D Convolution (Conv3D)</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong><br />
+                          2️⃣ <strong>Shared Memory</strong> (Minimizing redundant loads)<br />
+                          3️⃣ <strong>Tiled</strong> (Reducing register pressure)<br />
+                          4️⃣ <strong>Register Blocking</strong> (Efficient memory reuse via registers)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Matrix & Reduction Operations -->
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Matrix &amp; Reduction Operations</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th class="px-4 py-2 border">Kernel</th>
+                        <th class="px-4 py-2 border">Optimization Levels</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Matrix Transpose</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Direct row-column swaps)<br />
+                          2️⃣ <strong>Shared Memory Tiling</strong> (Blocking memory accesses for fewer global loads)<br />
+                          3️⃣ <strong>Memory Coalescing</strong> (Optimizing global memory writes for aligned access)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Matrix Multiplication (GEMM)</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Row-major computation)<br />
+                          2️⃣ <strong>Tiled</strong> (Using shared memory for efficient blocking)<br />
+                          3️⃣ <strong>Register Blocking</strong> (Reducing register pressure &amp; maximizing reuse)<br />
+                          4️⃣ <strong>Warp-Level Tiling</strong> (Optimizing warp-level data exchange)<br />
+                          5️⃣ <strong>Tensor Cores with WMMA</strong> (Using NVIDIA Tensor Cores for fused matrix ops)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Reduction Sum</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Basic sequential reduction per thread block)<br />
+                          2️⃣ <strong>Branchless Reduction</strong> (Avoiding thread divergence for performance gain)<br />
+                          3️⃣ <strong>Warp-Level Reduction</strong> (Using shuffle intrinsics for direct register exchange)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Element-wise & Activation Functions -->
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Element-wise &amp; Activation Functions</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th class="px-4 py-2 border">Kernel</th>
+                        <th class="px-4 py-2 border">Optimization Levels</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">ReLU Activation</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Basic element-wise ReLU application)<br />
+                          2️⃣ <strong>Coalesced Memory Access</strong> (Optimized read/write for better bandwidth usage)<br />
+                          3️⃣ <strong>Vectorized Execution</strong> (Processing multiple elements per thread using vector types like <code>float4</code>)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">SoftMax Function</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Computing exponentials &amp; normalizing sequentially)<br />
+                          2️⃣ <strong>Shared Memory Optimization</strong> (Avoiding redundant memory accesses)<br />
+                          3️⃣ <strong>Block Tiling</strong> (Parallelizing exponentiation &amp; normalization)<br />
+                          4️⃣ <strong>Warp-Level Reduction</strong> (Efficient sum-reduction across warps)<br />
+                          5️⃣ <strong>State-of-the-Art Optimization</strong> (Optimized numerical stability &amp; memory efficiency)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Vector Addition</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Thread-per-element)<br />
+                          2️⃣ <strong>Shared Memory Optimization</strong> (Minimizing redundant memory loads)<br />
+                          3️⃣ <strong>Tiled Execution</strong> (Using block-level parallelism for efficiency)<br />
+                          4️⃣ <strong>Coalesced Memory Access</strong> (Optimizing memory loads for aligned access)<br />
+                          5️⃣ <strong>Vectorized Computation</strong> (Using <code>float4</code> for processing multiple elements per thread)<br />
+                          6️⃣ <strong>Multi-Element Processing</strong> (Reducing loop overhead for large arrays)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Image Processing Kernels -->
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Image Processing Kernels</h5>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th class="px-4 py-2 border">Kernel</th>
+                        <th class="px-4 py-2 border">Optimization Levels</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Greyscale Conversion</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Direct pixel-wise computation)<br />
+                          2️⃣ <strong>Shared Memory Optimization</strong> (Reducing redundant loads per thread block)<br />
+                          3️⃣ <strong>Memory Coalescing</strong> (Ensuring aligned memory accesses for better bandwidth)<br />
+                          4️⃣ <strong>Vectorized Computation</strong> (<code>uchar4</code> processing per thread)<br />
+                          5️⃣ <strong>Multi-Pixel Processing</strong> (Parallel processing of multiple pixels per thread)<br />
+                          6️⃣ <strong>Fused Multiply-Add (FMA) Optimization</strong> (Combining operations for fewer instructions)
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="px-4 py-2 border font-bold">Image Blurring</td>
+                        <td class="px-4 py-2 border">
+                          1️⃣ <strong>Naïve</strong> (Basic kernel filter computation per pixel)<br />
+                          2️⃣ <strong>Optimized Shared Memory Tiling</strong> (Minimizing global memory accesses by loading tiles into shared memory)
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Future Plans -->
+                <h4 class="text-2xl font-bold mt-8 mb-4">📝 Currently Implementing / TODO &amp; Future Plans</h4>
+                <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                  <li>Self-Attention CUDA Kernel</li>
+                  <li>Flash Attention Kernel Optimization</li>
+                  <li>LeakyReLU Kernel</li>
+                  <li>Layer Normalization CUDA Kernel</li>
+                  <li>FFT, BFS, DFS, and Sorting CUDA Implementations</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a href="https://github.com/AmanSwar/KernelLab" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors">GitHub</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project Card 2: RetinaSys -->
+        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+          <img
+            src="assets/DRgrades.png"
+            alt="RetinaSys"
+            class="w-full md:w-1/3 h-full object-cover"
+          />
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <h3 class="text-3xl font-bold mb-4">RetinaSys</h3>
+              <p class="text-black-00 mb-6">
+                A novel system for the detection of diabetic retinopathy designed to address key gaps. RetinaSys is not only about a new model but also integrates explainable AI (xAI) for interpretable decision-making, generalizes across diverse demographics through robust training on varied datasets, and is optimized for real-time deployment in resource-constrained environments.
+              </p>
+              <p class="text-black-00 mb-6">
+                Implemented and compared multiple self-supervised learning papers including:
+              </p>
+              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                <li>SimCLR</li>
+                <li>BYOL</li>
+                <li>DINO</li>
+                <li>iBOT</li>
+                <li>IJEPA</li>
+                <li>MoCo</li>
+                <li>Supervised Contrastive Learning</li>
+              </ul>
+              <p class="text-black-00 mb-6">
+                Applied and customized various vision models for fitting into each SSL method, such as:
+              </p>
+              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                <li>Vision Transformers</li>
+                <li>Shifted window Transformers</li>
+                <li>ConvNeXt</li>
+              </ul>
+              <p class="text-black-00 mb-6">
+                Applied various advanced CNN methods on top of SSL pre-trained backbone as classifier such as:
+              </p>
+              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                <li>Convolutional Block Attention Module</li>
+                <li>Grade Consistence Module</li>
+                <li>Gradient Reversal</li>
+                <li>Custom Loss function to combine all named OrdinalDomainLoss</li>
+              </ul>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">C++</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors">View Project</a>
+              <a href="https://github.com/AmanSwar/KernelLab" class="inline-block bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full transition-colors">GitHub</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project Card 3: SearchSphere -->
+        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+          <img
+            src="assets/searchsplogo.png"
+            alt="SearchSphere"
+            class="w-full md:w-1/3 h-full object-cover"
+          />
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <h3 class="text-3xl font-bold mb-4">SearchSphere</h3>
+              <p class="text-black-00 mb-6">
+                Windows Search bar sucks, you can't search any file unless you know the exact name—which often we don't.
+                Hence SearchSphere: a multimodal search engine where you can search for both images and documents using natural language.
+              </p>
+              <p class="text-black-00 mb-6">Current Supported File types:</p>
+              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                <li>Word Documents</li>
+                <li>PDF</li>
+                <li>PPT</li>
+                <li>Text Files</li>
+                <li>Markdown Files</li>
+                <li>Jpeg / jpg</li>
+                <li>Png</li>
+              </ul>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">C++</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors">View Project</a>
+              <a href="https://github.com/AmanSwar/KernelLab" class="inline-block bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full transition-colors">GitHub</a>
+            </div>
+          </div>
+        </article>
+
+        <h1 class="text-3xl font-bold mb-10 mt-24">UNDER ACTIVE DEVELOPMENT</h1>
+
+        <!-- Project Card 4: EANNS -->
+        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+          <img
+            src="assets/eannslogo.png"
+            alt="EANNS"
+            class="w-full md:w-1/3 h-full object-cover"
+          />
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <h3 class="text-3xl font-bold mb-4">
+                EANNS (Enhanced Approximate Nearest Neighbor Search)
+              </h3>
+              <p class="text-black-00 mb-6">
+                EANNS is a high-performance, hybrid vector database designed for real-time, scalable, and metadata-aware vector search. Unlike traditional ANN solutions like FAISS, Milvus, or Weaviate, EANNS is optimized for both speed and persistence, leveraging RAM for ultra-fast queries and disk storage for long-term scalability.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">C++</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">OpenMP</span>
+              </div>
+
+              <!-- Detailed description from GitHub README -->
+              <div class="text-white">
+                <h4 class="text-2xl font-bold mt-8 mb-4">Key Features</h4>
+                <ul class="list-disc list-inside mb-6 space-y-2">
+                  <li>✅ <strong>Hybrid Storage</strong> → RAM (fast retrieval) + Disk (persistent storage)</li>
+                  <li>✅ <strong>Hybrid Search</strong> → Combines vector similarity search with structured metadata filtering</li>
+                  <li>✅ <strong>Real-Time Updates</strong> → Supports dynamic indexing without full reindexing</li>
+                  <li>✅ <strong>Optimized with CUDA &amp; OpenMP</strong> → Extreme speed via parallel computing</li>
+                  <li>✅ <strong>Redis-Style Simplicity</strong> → Minimal setup, easy-to-use API, open-source scalability</li>
+                </ul>
+                <p class="mb-6">
+                  Built in <strong>C++ with CUDA and OpenMP</strong>, EANNS is designed for <strong>high-performance AI, search, and recommendation systems</strong>, offering unmatched efficiency and flexibility compared to existing vector search solutions. 🚀
+                </p>
+
+                <h4 class="text-2xl font-bold mt-8 mb-4">🔥 Currently Developing</h4>
+                <ul class="list-disc list-inside mb-6 space-y-2">
+                  <li>Core vector storage (RAM/Disk hybrid)</li>
+                  <li>Brute-force search (Flat Index)</li>
+                  <li>Efficient indexing with SIMD &amp; parallelism</li>
+                  <li>IVF, HNSW, and PQ-based search (WIP)</li>
+                  <li>Real-time indexing &amp; metadata filtering (WIP)</li>
+                  <li>CUDA-accelerated ANN search (Coming soon)</li>
+                </ul>
+
+                <h4 class="text-2xl font-bold mt-8 mb-4">⚡ Key Features (Planned)</h4>
+
+                <h5 class="text-xl font-semibold mt-6 mb-2">1. Flexible Storage &amp; Search</h5>
+                <ul class="list-disc list-inside mb-4 space-y-2">
+                  <li>
+                    <strong>Multiple Index Types</strong>:
+                    <ul class="list-disc list-inside ml-6">
+                      <li><strong>SpaceFlat</strong> → Brute-force search (like IndexFlatL2).</li>
+                      <li><strong>SpaceCluster</strong> → Cluster-based search (like IndexIVF).</li>
+                      <li><strong>SpaceGraph</strong> → Graph-based search (like IndexHNSW).</li>
+                      <li><strong>SpaceQuantize</strong> → Compressed search (like IndexPQ).</li>
+                    </ul>
+                  </li>
+                  <li><strong>Hybrid Storage</strong>: RAM (fast access) &amp; Disk (persistent storage).</li>
+                </ul>
+
+                <h5 class="text-xl font-semibold mt-6 mb-2">2. Optimized for Speed &amp; Scale</h5>
+                <ul class="list-disc list-inside mb-4 space-y-2">
+                  <li>CUDA-accelerated search (for GPU compute).</li>
+                  <li>OpenMP for multi-threaded query execution.</li>
+                  <li>SIMD-powered vectorized computations.</li>
+                </ul>
+
+                <h5 class="text-xl font-semibold mt-6 mb-2">3. Metadata-Aware Hybrid Search</h5>
+                <ul class="list-disc list-inside mb-4 space-y-2">
+                  <li>Supports metadata filtering alongside vector similarity.</li>
+                  <li>Key-value store for fast lookup &amp; hybrid queries.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a href="#" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-full transition-colors">View Project</a>
+              <a href="https://github.com/AmanSwar/KernelLab" class="inline-block bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-6 rounded-full transition-colors">GitHub</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <script>
+      // Initialize particles.js for full-page background
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#4A90E2" },
+          shape: { type: "circle" },
+          opacity: { value: 0.5, random: false },
+          size: { value: 3, random: true },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#4A90E2",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "repulse" },
+            onclick: { enable: true, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            repulse: { distance: 100, duration: 0.4 },
+            push: { particles_nb: 4 },
+          },
+        },
+        retina_detect: true,
+      });
+
+      // Initialize GSAP animations
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.from(".project-card", {
+        scrollTrigger: {
+          trigger: ".project-card",
+          start: "top bottom-=100",
+          toggleActions: "play none none reverse",
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+      });
+    </script>
+  </body>
+</html>
