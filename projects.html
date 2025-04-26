@@ -10,10 +10,10 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <!-- Include particles.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-black text-white">
+  <body class="bg-black text-white font-inter">
     <!-- Full-page Particles Background -->
     <div id="particles-js" class="fixed inset-0 -z-10"></div>
 
@@ -45,8 +45,63 @@
     <!-- Projects Column Section -->
     <section class="py-12">
       <div class="container mx-auto px-6">
-        <!-- Project Card 1: KernelLab -->
-        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+        <!-- Project Card: TorchSSL -->
+        <article class="project-card bg-black rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row mb-8 shadow-md">
+          <img
+            src="assets/TorchSSL_logo.png"
+            alt="TorchSSL"
+            class="w-full md:w-1/3 h-full object-cover"
+          />
+          <div class="p-8 flex flex-col justify-between">
+            <div>
+              <h3 class="text-3xl font-bold mb-4 text-white">TorchSSL</h3>
+              <p class="text-gray-300 mb-6">
+                A lean, high-performance PyTorch library for self-supervised learning, built from the ground up for speed and transparency.
+              </p>
+
+              <div class="text-white mb-6">
+                <h4 class="text-2xl font-bold mb-2">📌 Key Features</h4>
+                <ul class="list-disc list-inside space-y-2 text-gray-300">
+                  <li><strong>Custom SSLDataLoader</strong> – directory-based image loader with pre-built augmentations (SimCLR, MoCo, DINO, IJEPA).</li>
+                  <li><strong>Backbones & Compatibility</strong>: All convolution-based architectures</li>
+                  <li><strong>Modular Methods</strong> – SimCLR, MoCo, DINO, I-JEPA each in its own plug-and-play class.</li>
+                  <li><strong>Fused CUDA Kernels</strong> – NT-Xent loss implemented in custom CUDA for 3–5× runtime speedup.</li>
+                  <li><strong>Evaluation Suite</strong> – kNN & linear-probe pipelines to benchmark representation quality.</li>
+                  <li><strong>Visualization</strong> – Built-in WandB support & latent-space PCA/t-SNE plotting.</li>
+                </ul>
+              </div>
+
+              <div class="text-white mb-6">
+                <h4 class="text-2xl font-bold mb-2">📣 Coming Soon</h4>
+                <ul class="list-disc list-inside space-y-2 text-gray-300">
+                  <li>DINOv2, iBOT, VICReg, BYOL</li>
+                  <li>Support for all Transformer-based models (ViT, SwinViT, Deit)</li>
+                  <li>Advanced evaluation suite (centered kNN, probing per class)</li>
+                  <li>TorchScript & JIT support</li>
+                  <li>TorchSSL Playground on CIFAR10, STL10, ImageNet</li>
+                </ul>
+              </div>
+
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">Python</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">PyTorch</span>
+                <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="https://github.com/AmanSwar/TorchSSL"
+                class="inline-block border border-white text-white font-bold py-2 px-6 rounded-md transition-colors duration-200 hover:bg-white hover:text-black"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project Card: KernelLab -->
+        <article class="project-card bg-black rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row mb-8 shadow-md">
           <img
             src="assets/kernellablogo.png"
             alt="KernelLab"
@@ -54,8 +109,8 @@
           />
           <div class="p-8 flex flex-col justify-between">
             <div>
-              <h3 class="text-3xl font-bold mb-4">KernelLab</h3>
-              <p class="text-black-00 mb-6">
+              <h3 class="text-3xl font-bold mb-4 text-white">KernelLab</h3>
+              <p class="text-gray-300 mb-6">
                 KernelLab is a collection of highly optimized CUDA kernels designed for deep learning, high-performance computing (HPC), and general-purpose GPU acceleration. Each kernel includes multiple levels of optimization—from naïve implementations to shared memory, warp-level, vectorized, and tensor-core optimized versions.
               </p>
               <div class="flex flex-wrap gap-2 mb-6">
@@ -63,11 +118,9 @@
                 <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">CUDA</span>
               </div>
 
-              <!-- Detailed description from GitHub README -->
               <div class="text-white">
-                <h4 class="text-2xl font-bold mt-8 mb-4">📌 Implemented Kernels &amp; Optimizations</h4>
+                <h4 class="text-2xl font-bold mt-8 mb-4">📌 Implemented Kernels & Optimizations</h4>
 
-                <!-- Convolution Kernels -->
                 <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Convolution Kernels</h5>
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm">
@@ -100,8 +153,7 @@
                   </table>
                 </div>
 
-                <!-- Matrix & Reduction Operations -->
-                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Matrix &amp; Reduction Operations</h5>
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Matrix & Reduction Operations</h5>
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm">
                     <thead>
@@ -124,7 +176,7 @@
                         <td class="px-4 py-2 border">
                           1️⃣ <strong>Naïve</strong> (Row-major computation)<br />
                           2️⃣ <strong>Tiled</strong> (Using shared memory for efficient blocking)<br />
-                          3️⃣ <strong>Register Blocking</strong> (Reducing register pressure &amp; maximizing reuse)<br />
+                          3️⃣ <strong>Register Blocking</strong> (Reducing register pressure & maximizing reuse)<br />
                           4️⃣ <strong>Warp-Level Tiling</strong> (Optimizing warp-level data exchange)<br />
                           5️⃣ <strong>Tensor Cores with WMMA</strong> (Using NVIDIA Tensor Cores for fused matrix ops)
                         </td>
@@ -141,8 +193,7 @@
                   </table>
                 </div>
 
-                <!-- Element-wise & Activation Functions -->
-                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Element-wise &amp; Activation Functions</h5>
+                <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Element-wise & Activation Functions</h5>
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm">
                     <thead>
@@ -163,11 +214,11 @@
                       <tr>
                         <td class="px-4 py-2 border font-bold">SoftMax Function</td>
                         <td class="px-4 py-2 border">
-                          1️⃣ <strong>Naïve</strong> (Computing exponentials &amp; normalizing sequentially)<br />
+                          1️⃣ <strong>Naïve</strong> (Computing exponentials & normalizing sequentially)<br />
                           2️⃣ <strong>Shared Memory Optimization</strong> (Avoiding redundant memory accesses)<br />
-                          3️⃣ <strong>Block Tiling</strong> (Parallelizing exponentiation &amp; normalization)<br />
+                          3️⃣ <strong>Block Tiling</strong> (Parallelizing exponentiation & normalization)<br />
                           4️⃣ <strong>Warp-Level Reduction</strong> (Efficient sum-reduction across warps)<br />
-                          5️⃣ <strong>State-of-the-Art Optimization</strong> (Optimized numerical stability &amp; memory efficiency)
+                          5️⃣ <strong>State-of-the-Art Optimization</strong> (Optimized numerical stability & memory efficiency)
                         </td>
                       </tr>
                       <tr>
@@ -185,7 +236,6 @@
                   </table>
                 </div>
 
-                <!-- Image Processing Kernels -->
                 <h5 class="text-xl font-semibold mt-6 mb-2">🔹 Image Processing Kernels</h5>
                 <div class="overflow-x-auto">
                   <table class="min-w-full text-sm">
@@ -218,9 +268,8 @@
                   </table>
                 </div>
 
-                <!-- Future Plans -->
-                <h4 class="text-2xl font-bold mt-8 mb-4">📝 Currently Implementing / TODO &amp; Future Plans</h4>
-                <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+                <h4 class="text-2xl font-bold mt-8 mb-4">📝 Currently Implementing / TODO & Future Plans</h4>
+                <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
                   <li>Self-Attention CUDA Kernel</li>
                   <li>Flash Attention Kernel Optimization</li>
                   <li>LeakyReLU Kernel</li>
@@ -228,35 +277,35 @@
                   <li>FFT, BFS, DFS, and Sorting CUDA Implementations</li>
                 </ul>
               </div>
-              <div class="flex flex-wrap gap-4">
-
-                <a
-                  href="https://github.com/AmanSwar/KernelLab"
-                  class="inline-block border border-white text-white font-bold py-2 px-6 rounded-md transition-colors duration-200 hover:bg-white hover:text-black"
-                >
-                  GitHub
-                </a>
-              </div>
+            </div>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="https://github.com/AmanSwar/KernelLab"
+                class="inline-block border border-white text-white font-bold py-2 px-6 rounded-md transition-colors duration-200 hover:bg-white hover:text-black"
+              >
+                GitHub
+              </a>
+            </div>
           </div>
         </article>
 
-        <!-- Project Card 2: RetinaSys -->
-        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+        <!-- Project Card: RetinaSys -->
+        <article class="project-card bg-black rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row mb-8 shadow-md">
           <img
-            src="assets/DRgrades.png"
+            src="assets/training.drawio.png"
             alt="RetinaSys"
             class="w-full md:w-1/3 h-full object-cover"
           />
           <div class="p-8 flex flex-col justify-between">
             <div>
-              <h3 class="text-3xl font-bold mb-4">RetinaSys</h3>
-              <p class="text-black-00 mb-6">
+              <h3 class="text-3xl font-bold mb-4 text-white">RetinaSys</h3>
+              <p class="text-gray-300 mb-6">
                 A novel system for the detection of diabetic retinopathy designed to address key gaps. RetinaSys is not only about a new model but also integrates explainable AI (xAI) for interpretable decision-making, generalizes across diverse demographics through robust training on varied datasets, and is optimized for real-time deployment in resource-constrained environments.
               </p>
-              <p class="text-black-00 mb-6">
+              <p class="text-gray-300 mb-6">
                 Implemented and compared multiple self-supervised learning papers including:
               </p>
-              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+              <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
                 <li>SimCLR</li>
                 <li>BYOL</li>
                 <li>DINO</li>
@@ -265,18 +314,18 @@
                 <li>MoCo</li>
                 <li>Supervised Contrastive Learning</li>
               </ul>
-              <p class="text-black-00 mb-6">
+              <p class="text-gray-300 mb-6">
                 Applied and customized various vision models for fitting into each SSL method, such as:
               </p>
-              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+              <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
                 <li>Vision Transformers</li>
                 <li>Shifted window Transformers</li>
                 <li>ConvNeXt</li>
               </ul>
-              <p class="text-black-00 mb-6">
+              <p class="text-gray-300 mb-6">
                 Applied various advanced CNN methods on top of SSL pre-trained backbone as classifier such as:
               </p>
-              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+              <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
                 <li>Convolutional Block Attention Module</li>
                 <li>Grade Consistence Module</li>
                 <li>Gradient Reversal</li>
@@ -288,7 +337,6 @@
               </div>
             </div>
             <div class="flex flex-wrap gap-4">
-
               <a
                 href="https://github.com/AmanSwar/DR-detection"
                 class="inline-block border border-white text-white font-bold py-2 px-6 rounded-md transition-colors duration-200 hover:bg-white hover:text-black"
@@ -299,8 +347,8 @@
           </div>
         </article>
 
-        <!-- Project Card 3: SearchSphere -->
-        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+        <!-- Project Card: SearchSphere -->
+        <article class="project-card bg-black rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row mb-8 shadow-md">
           <img
             src="assets/searchsplogo.png"
             alt="SearchSphere"
@@ -308,13 +356,13 @@
           />
           <div class="p-8 flex flex-col justify-between">
             <div>
-              <h3 class="text-3xl font-bold mb-4">SearchSphere</h3>
-              <p class="text-black-00 mb-6">
+              <h3 class="text-3xl font-bold mb-4 text-white">SearchSphere</h3>
+              <p class="text-gray-300 mb-6">
                 Windows Search bar sucks, you can't search any file unless you know the exact name—which often we don't.
                 Hence SearchSphere: a multimodal search engine where you can search for both images and documents using natural language.
               </p>
-              <p class="text-black-00 mb-6">Current Supported File types:</p>
-              <ul class="list-disc list-inside text-black-00 mb-6 space-y-2">
+              <p class="text-gray-300 mb-6">Current Supported File types:</p>
+              <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
                 <li>Word Documents</li>
                 <li>PDF</li>
                 <li>PPT</li>
@@ -339,10 +387,10 @@
           </div>
         </article>
 
-        <h1 class="text-3xl font-bold mb-10 mt-24">UNDER ACTIVE DEVELOPMENT</h1>
+        <h1 class="text-3xl font-bold mt-16 mb-8 text-center">UNDER ACTIVE DEVELOPMENT</h1>
 
-        <!-- Project Card 4: EANNS -->
-        <article class="project-card bg-black-900 rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row">
+        <!-- Project Card: EANNS -->
+        <article class="project-card bg-black rounded-lg overflow-hidden transform hover:scale-105 transition-transform duration-300 flex flex-col md:flex-row mb-8 shadow-md">
           <img
             src="assets/eannslogo.png"
             alt="EANNS"
@@ -350,10 +398,10 @@
           />
           <div class="p-8 flex flex-col justify-between">
             <div>
-              <h3 class="text-3xl font-bold mb-4">
+              <h3 class="text-3xl font-bold mb-4 text-white">
                 EANNS (Enhanced Approximate Nearest Neighbor Search)
               </h3>
-              <p class="text-black-00 mb-6">
+              <p class="text-gray-300 mb-6">
                 EANNS is a high-performance, hybrid vector database designed for real-time, scalable, and metadata-aware vector search. Unlike traditional ANN solutions like FAISS, Milvus, or Weaviate, EANNS is optimized for both speed and persistence, leveraging RAM for ultra-fast queries and disk storage for long-term scalability.
               </p>
               <div class="flex flex-wrap gap-2 mb-6">
@@ -362,34 +410,33 @@
                 <span class="px-3 py-1 bg-blue-600 rounded-full text-sm">OpenMP</span>
               </div>
 
-              <!-- Detailed description from GitHub README -->
               <div class="text-white">
                 <h4 class="text-2xl font-bold mt-8 mb-4">Key Features</h4>
-                <ul class="list-disc list-inside mb-6 space-y-2">
+                <ul class="list-disc list-inside mb-6 space-y-2 text-gray-300">
                   <li>✅ <strong>Hybrid Storage</strong> → RAM (fast retrieval) + Disk (persistent storage)</li>
                   <li>✅ <strong>Hybrid Search</strong> → Combines vector similarity search with structured metadata filtering</li>
                   <li>✅ <strong>Real-Time Updates</strong> → Supports dynamic indexing without full reindexing</li>
-                  <li>✅ <strong>Optimized with CUDA &amp; OpenMP</strong> → Extreme speed via parallel computing</li>
+                  <li>✅ <strong>Optimized with CUDA & OpenMP</strong> → Extreme speed via parallel computing</li>
                   <li>✅ <strong>Redis-Style Simplicity</strong> → Minimal setup, easy-to-use API, open-source scalability</li>
                 </ul>
-                <p class="mb-6">
+                <p class="text-gray-300 mb-6">
                   Built in <strong>C++ with CUDA and OpenMP</strong>, EANNS is designed for <strong>high-performance AI, search, and recommendation systems</strong>, offering unmatched efficiency and flexibility compared to existing vector search solutions. 🚀
                 </p>
 
                 <h4 class="text-2xl font-bold mt-8 mb-4">🔥 Currently Developing</h4>
-                <ul class="list-disc list-inside mb-6 space-y-2">
+                <ul class="list-disc list-inside mb-6 space-y-2 text-gray-300">
                   <li>Core vector storage (RAM/Disk hybrid)</li>
                   <li>Brute-force search (Flat Index)</li>
-                  <li>Efficient indexing with SIMD &amp; parallelism</li>
+                  <li>Efficient indexing with SIMD & parallelism</li>
                   <li>IVF, HNSW, and PQ-based search (WIP)</li>
-                  <li>Real-time indexing &amp; metadata filtering (WIP)</li>
+                  <li>Real-time indexing & metadata filtering (WIP)</li>
                   <li>CUDA-accelerated ANN search (Coming soon)</li>
                 </ul>
 
                 <h4 class="text-2xl font-bold mt-8 mb-4">⚡ Key Features (Planned)</h4>
 
-                <h5 class="text-xl font-semibold mt-6 mb-2">1. Flexible Storage &amp; Search</h5>
-                <ul class="list-disc list-inside mb-4 space-y-2">
+                <h5 class="text-xl font-semibold mt-6 mb-2">1. Flexible Storage & Search</h5>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-300">
                   <li>
                     <strong>Multiple Index Types</strong>:
                     <ul class="list-disc list-inside ml-6">
@@ -399,20 +446,20 @@
                       <li><strong>SpaceQuantize</strong> → Compressed search (like IndexPQ).</li>
                     </ul>
                   </li>
-                  <li><strong>Hybrid Storage</strong>: RAM (fast access) &amp; Disk (persistent storage).</li>
+                  <li><strong>Hybrid Storage</strong>: RAM (fast access) & Disk (persistent storage).</li>
                 </ul>
 
-                <h5 class="text-xl font-semibold mt-6 mb-2">2. Optimized for Speed &amp; Scale</h5>
-                <ul class="list-disc list-inside mb-4 space-y-2">
+                <h5 class="text-xl font-semibold mt-6 mb-2">2. Optimized for Speed & Scale</h5>
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-300">
                   <li>CUDA-accelerated search (for GPU compute).</li>
                   <li>OpenMP for multi-threaded query execution.</li>
                   <li>SIMD-powered vectorized computations.</li>
                 </ul>
 
                 <h5 class="text-xl font-semibold mt-6 mb-2">3. Metadata-Aware Hybrid Search</h5>
-                <ul class="list-disc list-inside mb-4 space-y-2">
+                <ul class="list-disc list-inside mb-4 space-y-2 text-gray-300">
                   <li>Supports metadata filtering alongside vector similarity.</li>
-                  <li>Key-value store for fast lookup &amp; hybrid queries.</li>
+                  <li>Key-value store for fast lookup & hybrid queries.</li>
                 </ul>
               </div>
             </div>
