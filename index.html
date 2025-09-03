@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aman Swar - Making GPUs Go Brrr</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141417;
+            --bg-card: #1a1a1f;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0aa;
+            --text-muted: #6b6b7a;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --shadow-glow: rgba(0, 212, 255, 0.2);
+            --warning: #ff6b35;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1b;
+            --text-secondary: #4a4a5a;
+            --text-muted: #8a8a9a;
+            --accent-primary: #0066cc;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #0066cc 0%, #7c3aed 100%);
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --shadow-glow: rgba(0, 102, 204, 0.1);
+            --warning: #ff6b35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Animated background grid */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .header {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        /* Main content */
+        .main {
+            margin-top: 80px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 4rem;
+            align-items: center;
+            width: 100%;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        /* Status card */
+        .status-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .current-obsession {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .obsession-title {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Work Section */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Project Cards */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-category {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--accent-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .project-metrics {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .metrics-title {
+            color: var(--accent-primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: 'Monaco', monospace;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Fun Section */
+        .fun-section {
+            background: var(--bg-secondary);
+        }
+
+        .fun-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .fun-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .fun-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .confession-list {
+            list-style: none;
+        }
+
+        .confession-list li {
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .confession-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-primary);
+        }
+
+        .current-status {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
+            border: 1px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-title {
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Contact Section */
+        .contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-link {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .fun-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Aman</div>
+            <div class="nav-links">
+                <a href="#work">Work</a>
+                <a href="#blog">Blog</a>
+                <a href="#fun">About</a>
+                <a href="#contact">Contact</a>
+                <button class="theme-toggle" id="theme-toggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Making GPUs go Brr...</h1>
+                        <p class="hero-tagline">AI Systems Engineer obsessed with performance</p>
+                        <p class="hero-description">
+                            I optimize machine learning systems from kernel-level GPU code to distributed training
+                            pipelines.
+                        </p>
+                        <div class="cta-buttons">
+                            <a href="resume_v1.01.pdf" class="btn btn-primary">Grab Resume</a>
+                            <a href="projects.html" class="btn btn-secondary">See All Projects</a>
+                        </div>
+                    </div>
+
+                    <div class="status-card">
+                        <div class="status-indicator">
+                            <div class="status-dot"></div>
+                            <span>Currently Available</span>
+                        </div>
+                        <p>Open to ML Performance, Systems and GPU computing roles</p>
+
+                        <div class="current-obsession">
+                            <div class="obsession-title">Current Obsession</div>
+                            <p>Building personalized AI systems that can run locally on your computer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Selected Work</h2>
+                    <p class="section-subtitle">Projects that actually work in production (with benchmarks to prove it)
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-category">GPU Computing</div>
+                        </div>
+                        <h3 class="project-title">KernelLab</h3>
+                        <p class="project-description">
+                            Hand-crafted GPU kernels that started as "how hard can matrix multiplication be?"
+                            and ended up as production-ready implementations with serious performance gains.
+                        </p>
+                        <div class="project-metrics">
+                            <div class="metrics-title">Performance Wins</div>
+                            <div class="metric">→ 90% of PyTorch/cuBLAS throughput achieved</div>
+                            <div class="metric">→ Full FP32/FP16 precision support</div>
+                            <div class="metric">→ Memory coalescing that actually works</div>
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">CUDA</span>
+                            <span class="tech-tag">Triton</span>
+                            <span class="tech-tag">WMMA</span>
+                            <span class="tech-tag">Nsight</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/KernelLab" class="project-link">GitHub →</a>
+                            <a href="project/kernellab.html" class="project-link">Detailed View →</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-category">Distributed Systems</div>
+                        </div>
+                        <h3 class="project-title">DistJax</h3>
+                        <p class="project-description">
+                            DistJax is a mini-library and collection of examples designed to simplify the implementation
+                            of common
+                            distributed training paradigms in JAX and Flax.
+                        </p>
+                        <div class="project-metrics">
+                            <div class="metrics-title">Parallelism Strategies</div>
+                            <div class="metric">→ Data Parallelism</div>
+                            <div class="metric">→ Pipeline Parallelism</div>
+                            <div class="metric">→ Tensor Parallelism</div>
+                            <div class="metric">→ Async Tensor Parallelism with Transformer support</div>
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">JAX</span>
+                            <span class="tech-tag">Flax</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/DistJax" class="project-link">GitHub →</a>
+                            <a href="project/distjax.html" class="project-link">Detailed View →</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-category">Self-Supervised Learning</div>
+                        </div>
+                        <h3 class="project-title">TorchSSL</h3>
+                        <p class="project-description">
+                            PyTorch library that makes self-supervised learning actually usable.
+                            Complete SSL training in 20 lines because life's too short for boilerplate.
+                        </p>
+                        <div class="project-metrics">
+                            <div class="metrics-title">Speed Improvements</div>
+                            <div class="metric">→ 3-5x faster contrastive loss computation</div>
+                            <div class="metric">→ Optimized kernels under the hood</div>
+                            <div class="metric">→ Works on first try (revolutionary)</div>
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">PyTorch</span>
+                            <span class="tech-tag">CUDA</span>
+                            <span class="tech-tag">ViT</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/TorchSSL" class="project-link">GitHub →</a>
+                            <a href="project/torchssl.html" class="project-link">Detailed View →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-category">Medical AI</div>
+                        </div>
+                        <h3 class="project-title">RetinaSys</h3>
+                        <p class="project-description">
+                            Diabetic retinopathy detection system optimized for edge deployment.
+                            Because healthcare AI shouldn't require a data center to run.
+                        </p>
+                        <div class="project-metrics">
+                            <div class="metrics-title">Clinical Results</div>
+                            <div class="metric">→ 90.73% QWK, 90.85% AUC</div>
+                            <div class="metric">→ 60% memory reduction via INT8</div>
+                            <div class="metric">→ Runs on actual edge devices</div>
+                        </div>
+                        <div class="tech-stack">
+                            <span class="tech-tag">DINOv2</span>
+                            <span class="tech-tag">OpenVINO</span>
+                            <span class="tech-tag">SHAP</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/DR-detection" class="project-link">GitHub →</a>
+                            <a href="project/retinasys.html" class="project-link">Detailed View →</a>
+                            <a href="#" class="project-link">Paper →</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-header">
+                            <div class="project-category">AI Search</div>
+                        </div>
+                        <h3 class="project-title">SearchSphere</h3>
+                        <p class="project-description">
+                            A standalone, AI-powered semantic search engine that runs locally on a user's machine. It understands the meaning behind a user's query to find relevant documents and images.
+                        </p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">MobileCLIP</span>
+                            <span class="tech-tag">FAISS</span>
+                            <span class="tech-tag">MobileBERT</span>
+                            <span class="tech-tag">Rich</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">GitHub →</a>
+                            <a href="project/searchsphere.html" class="project-link">Detailed View →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="current-status">
+                    <div class="status-title">🔬 Current Research</div>
+                    <p><strong>Automated Diabetic Retinopathy Detection via Self-Supervised Learning</strong> - Paper
+                        submitted to journals.
+                        Developing end-to-end systems that actually help doctors instead of replacing them.</p>
+                </div>
+            </div>
+        </section>
+        <section id="blog" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Latest Thoughts</h2>
+                    <p class="section-subtitle">Blogs coming out soon....</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="fun" class="section fun-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Beyond the Code</h2>
+                    <p class="section-subtitle">What I'm actually like when not profiling memory access patterns</p>
+                </div>
+
+                <div class="fun-grid">
+                    <div class="fun-card">
+                        <h3 class="fun-title">🤫 Developer Confessions</h3>
+                        <ul class="confession-list">
+                            <li>My main FOMO is my own project list – there's always something more interesting to build
+                                than
+                                what I'm currently working on</li>
+                            <li>I am a print debugger and proud of it – sophisticated tools are overrated when
+                                printf/print
+                                gets the job done</li>
+                            <li>Green dots on GitHub make me happy in ways that probably aren't healthy</li>
+                            <li>I hate abstraction and love to dwell deep – give me low-level optimization over black
+                                box magic
+                                any day</li>
+                            <li>Always over-caffeinated</li>
+                        </ul>
+                    </div>
+
+                    <div class="fun-card">
+                        <h3 class="fun-title">⚡ Current Status</h3>
+                        <div class="current-status">
+                            <div class="status-title">Currently Debugging:</div>
+                            <p>Interview preparation while simultaneously trying to convince myself I actually know what
+                                I'm
+                                doing. The imposter syndrome is real, but so are the technical skills.</p>
+                        </div>
+
+                        <div class="current-status">
+                            <div class="status-title">Dream Job:</div>
+                            <p>Working on systems where performance actually matters, interesting problems need solving,
+                                and the
+                                coffee budget matches the compute budget.</p>
+                        </div>
+
+                        <div class="current-status">
+                            <div class="status-title">Weekend Project:</div>
+                            <p>Currently exploring open source frameworks – diving deep into vLLM, SGLang, and JAX.
+                                Because
+                                apparently my idea of relaxation is understanding how other people optimize tensor
+                                operations.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="text-align: center; margin-top: 3rem; padding: 2rem; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-subtle);">
+                    <p style="font-style: italic; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6;">
+                        "The best code is not just efficient, it's understandable by the next developer who has to debug
+                        it at 2
+                        AM"
+                        <br><br>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">- Me, after being that developer too
+                            many
+                            times</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Technical Arsenal</h2>
+                    <p class="section-subtitle">Tools I use to make systems go brrr</p>
+                </div>
+
+                <div class="skills-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div class="fun-card">
+                        <h3 class="fun-title">⚡ Performance Computing</h3>
+                        <ul class="confession-list" style="margin-top: 1rem;">
+                            <li>CUDA (the good, bad, and segfaulty)</li>
+                            <li>Triton (when verbosity becomes a problem)</li>
+                            <li>WMMA (tensor cores go brrr)</li>
+                            <li>CuTe (cute name, serious performance)</li>
+                            <li>CUTLASS (NVIDIA's gift to humanity)</li>
+                            <li>OpenMP (parallel computing made simple)</li>
+                        </ul>
+                    </div>
+
+                    <div class="fun-card">
+                        <h3 class="fun-title">🤖 ML Frameworks</h3>
+                        <ul class="confession-list" style="margin-top: 1rem;">
+                            <li>PyTorch (80% of my existence)</li>
+                            <li>JAX (functional programming supremacy)</li>
+                            <li>OpenVINO (edge deployment savior)</li>
+                            <li>TensorRT (NVIDIA optimization magic)</li>
+                        </ul>
+                    </div>
+
+                    <div class="fun-card">
+                        <h3 class="fun-title">💻 Languages & Tools</h3>
+                        <ul class="confession-list" style="margin-top: 1rem;">
+                            <li>C++ (pointers and prayers)</li>
+                            <li>Python (life is short)</li>
+                            <li>C (when C++ feels too safe)</li>
+                        </ul>
+                    </div>
+
+                    <div class="fun-card">
+                        <h3 class="fun-title">🎯 Domains & Specialties</h3>
+                        <ul class="confession-list" style="margin-top: 1rem;">
+                            <li>Self-Supervised Learning</li>
+                            <li>Large Language Models</li>
+                            <li>Computer Vision</li>
+                            <li>Model Optimization & Quantization</li>
+                            <li>Distributed Training</li>
+                            <li>Edge Deployment</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Let's Talk Shop</h2>
+                    <p class="section-subtitle">Got slow models? Interesting optimization problems? Great coffee? Let's
+                        chat.</p>
+                </div>
+
+                <div class="contact-cards">
+                    <div class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-title">Email</div>
+                        <a href="mailto:p.amanswar@gmail.com" class="contact-link">p.amanswar@gmail.com</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">💻</div>
+                        <div class="contact-title">GitHub</div>
+                        <a href="https://github.com/AmanSwar" class="contact-link">AmanSwar</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">🔗</div>
+                        <div class="contact-title">LinkedIn</div>
+                        <a href="https://linkedin.com/in/aman-swar" class="contact-link">aman-swar</a>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">🌐</div>
+                        <div class="contact-title">Website</div>
+                        <a href="https://amanswar.github.io" class="contact-link">amanswar.github.io</a>
+                    </div>
+                </div>
+
+                <div
+                    style="text-align: center; margin-top: 3rem; padding: 2rem; background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1)); border-radius: 16px; border: 1px solid var(--accent-primary);">
+                    <h3 style="color: var(--accent-primary); margin-bottom: 0.5rem;">Currently Available</h3>
+                    <p style="color: var(--text-secondary);">
+                        Open to opportunities in ML infrastructure, systems optimization, or anywhere that appreciates
+                        well-engineered solutions and questionable coffee consumption habits.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Theme toggle functionality with in-memory storage
+        let currentTheme = 'dark';
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        // Initialize theme
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeToggle(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', currentTheme);
+            updateThemeToggle(currentTheme);
+
+            // Update header background immediately
+            updateHeaderBackground();
+        });
+
+        function updateThemeToggle(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function updateHeaderBackground() {
+            const header = document.querySelector('.header');
+            const scrollY = window.scrollY;
+
+            if (scrollY > 50) {
+                header.style.background = currentTheme === 'dark'
+                    ? 'rgba(10, 10, 11, 0.95)'
+                    : 'rgba(255, 255, 255, 0.95)';
+            } else {
+                header.style.background = currentTheme === 'dark'
+                    ? 'rgba(10, 10, 11, 0.8)'
+                    : 'rgba(255, 255, 255, 0.8)';
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 100;
+                    const elementPosition = target.offsetTop;
+                    const offsetPosition = elementPosition - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Header scroll effect
+        let lastScrollY = 0;
+        const header = document.querySelector('.header');
+
+        window.addEventListener('scroll', () => {
+            updateHeaderBackground();
+            lastScrollY = window.scrollY;
+        });
+
+        // Add some interactive effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Easter egg: Konami code for GPU enthusiasts
+        let konamiCode = [];
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+
+        document.addEventListener('keydown', (e) => {
+            konamiCode.push(e.code);
+            konamiCode = konamiCode.slice(-konamiSequence.length);
+
+            if (konamiCode.join('') === konamiSequence.join('')) {
+                // Easter egg triggered
+                document.body.style.animation = 'rainbow 2s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                    alert('🎉 You found the GPU enthusiast easter egg! Your dedication to optimization is noted.');
+                }, 2000);
+            }
+        });
+
+        // Add rainbow animation for easter egg
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbow {
+                0% { filter: hue-rotate(0deg); }
+                25% { filter: hue-rotate(90deg); }
+                50% { filter: hue-rotate(180deg); }
+                75% { filter: hue-rotate(270deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

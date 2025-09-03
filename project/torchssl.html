@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project - TorchSSL</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141417;
+            --bg-card: #1a1a1f;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0aa;
+            --text-muted: #6b6b7a;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --shadow-glow: rgba(0, 212, 255, 0.2);
+            --warning: #ff6b35;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1b;
+            --text-secondary: #4a4a5a;
+            --text-muted: #8a8a9a;
+            --accent-primary: #0066cc;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #0066cc 0%, #7c3aed 100%);
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --shadow-glow: rgba(0, 102, 204, 0.1);
+            --warning: #ff6b35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: var(--bg-secondary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Monaco', monospace;
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        pre code {
+            padding: 0;
+            background: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>TorchSSL</h1>
+        <h3>1. Introduction</h3>
+        <p>TorchSSL is a PyTorch-based library designed to provide a clean, modular, and high-performance environment for self-supervised learning with visual representations. The library is structured to be easy to use for both research and development, with a focus on extensibility and performance.</p>
+        <h3>2. Core Components</h3>
+        <p>The library is organized into several core components:</p>
+        <ul>
+            <li><code>torchssl/framework</code>: Contains the main SSL algorithm implementations (SimCLR, MoCo, DINO, I-JEPA).</li>
+            <li><code>torchssl/model</code>: Includes backbone models and projectors.</li>
+            <li><code>torchssl/loss</code>: Provides loss functions, including custom Triton-based implementations.</li>
+            <li><code>torchssl/dataset</code>: Contains data loading and augmentation pipelines.</li>
+            <li><code>torchssl/eval</code>: Includes evaluation methods like kNN and Linear Probing.</li>
+        </ul>
+        <h3>3. Frameworks</h3>
+        <p>Each SSL framework is implemented as a class that inherits from the base <code>SSL</code> class. The main frameworks are:</p>
+        <ul>
+            <li><strong><code>SimCLR</code></strong>: Implements the SimCLR framework. It uses a <code>SimclrModel</code> which consists of a backbone and a projection head. The training process involves generating two augmented views of each image and minimizing the NT-Xent loss between their representations.</li>
+            <li><strong><code>MoCO</code></strong>: Implements the Momentum Contrast (MoCo) framework. It uses a <code>MocoModel</code> with a query encoder, a key encoder, and a queue of negative samples. The key encoder is a momentum-updated version of the query encoder. The loss is calculated using the InfoNCE loss.</li>
+            <li><strong><code>Dino</code></strong>: Implements the DINO framework. It uses a <code>DinoModel</code> with a student and a teacher network. The teacher's weights are an exponential moving average of the student's weights. The loss is calculated between the student's and teacher's outputs, encouraging the student to learn from the teacher.</li>
+            <li><strong><code>IJEPA</code></strong>: Implements the Image-based Joint-Embedding Predictive Architecture (I-JEPA). It uses a context encoder and a target encoder. The goal is to predict the representations of target blocks in an image from a given context block.</li>
+        </ul>
+        <h3>4. Loss Functions</h3>
+        <p>TorchSSL includes both standard PyTorch and high-performance Triton-based loss functions:</p>
+        <ul>
+            <li><strong><code>NTXentLoss</code> and <code>NTXentLossTriton</code></strong>: The Normalized Temperature-scaled Cross-Entropy loss used in SimCLR. The Triton version is optimized for performance.</li>
+            <li><strong><code>InfoNCELoss</code> and <code>InfoNCELossTriton</code></strong>: The InfoNCE loss used in MoCo. The Triton version provides a significant speedup.</li>
+            <li><strong><code>DINOLoss</code></strong>: The loss function for the DINO framework, which involves a cross-entropy loss between the student and teacher outputs.</li>
+            <li><strong><code>IJEPALoss</code></strong>: The loss for I-JEPA, which is a mean squared error between the predicted and target features.</li>
+        </ul>
+        <h3>5. Data Loading and Augmentation</h3>
+        <ul>
+            <li><strong><code>SSLDataloader</code></strong>: A flexible data loader that can handle training and validation splits from a single directory or separate directories. It wraps the <code>SSLDataset</code> class.</li>
+            <li><strong><code>sslaug.py</code></strong>: Contains data augmentation pipelines for each SSL framework:
+                <ul>
+                    <li><code>SimclrAug</code>: Augmentations for SimCLR.</li>
+                    <li><code>MocoAug</code>: Augmentations for MoCo.</li>
+                    <li><code>DinoAug</code>: Multi-crop augmentations for DINO.</li>
+                    <li><code>IjepaAug</code>: Augmentations for I-JEPA.</li>
+                </ul>
+            </li>
+        </ul>
+        <h3>6. Models and Backbones</h3>
+        <ul>
+            <li><strong><code>Backbone</code></strong>: A wrapper class for <code>timm</code> models, allowing for easy integration of various architectures like <code>ConvNeXt</code> and <code>ResNet</code>.</li>
+            <li>The framework-specific model classes (<code>SimclrModel</code>, <code>MocoModel</code>, <code>DinoModel</code>, <code>IjepaModel</code>) combine the backbone with the necessary projection heads or other components.</li>
+        </ul>
+        <h3>7. Evaluation</h3>
+        <p>The <code>EvaluateSSL</code> class in <code>torchssl/eval/Eval.py</code> provides methods for evaluating the quality of the learned representations:</p>
+        <ul>
+            <li><strong><code>linear_probe_evaluation</code></strong>: Trains a linear classifier on top of the frozen features of the pre-trained model.</li>
+            <li><strong><code>knn_evaluation</code></strong>: Performs k-Nearest Neighbors classification on the learned features.</li>
+            <li><strong><code>monitor_feature_representation</code></strong>: Provides tools for visualizing the latent space using PCA and t-SNE, and for logging feature statistics to WandB.</li>
+        </ul>
+        <h3>8. Examples</h3>
+        <p>The <code>examples/</code> directory provides scripts to demonstrate how to use the different SSL frameworks. These scripts show how to set up the data loader, model, optimizer, and training loop for each framework.</p>
+        <h3>9. Performance</h3>
+        <p>The Triton-based loss functions in TorchSSL provide a significant performance improvement over the standard PyTorch implementations. The library is designed to be efficient and scalable, allowing for fast experimentation and research.</p>
+        <h3>10. Conclusion</h3>
+        <p>TorchSSL is a comprehensive and high-performance library for self-supervised learning with visual representations. Its modular design, ease of use, and focus on performance make it a valuable tool for both researchers and practitioners in the field.</p>
+        <a href="../projects.html" class="btn btn-secondary">Go Back</a>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Aman Swar</title>
+    <style>
+        :root {
+            --bg-primary: #0a0a0b;
+            --bg-secondary: #141417;
+            --bg-card: #1a1a1f;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0aa;
+            --text-muted: #6b6b7a;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --shadow-glow: rgba(0, 212, 255, 0.2);
+            --warning: #ff6b35;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1b;
+            --text-secondary: #4a4a5a;
+            --text-muted: #8a8a9a;
+            --accent-primary: #0066cc;
+            --accent-secondary: #7c3aed;
+            --accent-gradient: linear-gradient(135deg, #0066cc 0%, #7c3aed 100%);
+            --border-subtle: rgba(0, 0, 0, 0.1);
+            --shadow-glow: rgba(0, 102, 204, 0.1);
+            --warning: #ff6b35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 50px 50px;
+            animation: drift 20s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 11, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-subtle);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .header {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-subtle);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .main {
+            margin-top: 80px;
+            padding: 4rem 0;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .project-category {
+            background: rgba(124, 58, 237, 0.1);
+            color: var(--accent-secondary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-family: 'Monaco', monospace;
+        }
+
+        .project-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow-glow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px var(--shadow-glow);
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-grid"></div>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="index.html" class="logo">Aman</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#work">Work</a>
+                <a href="index.html#blog">Blog</a>
+                <a href="index.html#contact">Contact</a>
+                <button class="theme-toggle" id="theme-toggle">🌙</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">All Projects</h1>
+                <p class="page-subtitle">A comprehensive collection of systems, optimizations, and experiments that push
+                    the boundaries of performance</p>
+            </div>
+
+            <div class="projects-grid">
+                <!-- KernelLab -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">GPU Computing</div>
+                    </div>
+                    <h3 class="project-title">KernelLab</h3>
+                    <p class="project-description">
+                        A comprehensive collection of hand-optimized CUDA kernels for matrix operations. Started as a
+                        learning exercise, evolved into production-ready implementations that compete with cuBLAS
+                        performance. Features memory coalescing, shared memory optimization, and tensor core
+                        utilization.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">CUDA</span>
+                        <span class="tech-tag">Triton</span>
+                        <span class="tech-tag">WMMA</span>
+                        <span class="tech-tag">Nsight Compute</span>
+                        <span class="tech-tag">cuBLAS</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/AmanSwar/KernelLab" class="btn btn-secondary">GitHub</a>
+                        <a href="project/kernellab.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <!-- DistJax -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">Distributed Systems</div>
+                    </div>
+                    <h3 class="project-title">DistJax</h3>
+                    <p class="project-description">
+                        Mini-library simplifying distributed training in JAX and Flax. Implements common parallelism
+                        strategies including data, pipeline, and tensor parallelism. Features async tensor parallelism
+                        with full Transformer support and efficient gradient synchronization.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">JAX</span>
+                        <span class="tech-tag">Flax</span>
+                        <span class="tech-tag">XLA</span>
+                        <span class="tech-tag">NCCL</span>
+                        <span class="tech-tag">Distributed Training</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/AmanSwar/DistJax" class="btn btn-secondary">GitHub</a>
+                        <a href="project/distjax.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <!-- TorchSSL -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">Self-Supervised Learning</div>
+                    </div>
+                    <h3 class="project-title">TorchSSL</h3>
+                    <p class="project-description">
+                        PyTorch library for self-supervised learning with optimized contrastive loss implementations.
+                        Features 3-5x speedup over naive implementations through custom CUDA kernels and
+                        memory-efficient training loops. Supports popular SSL methods like SimCLR, MoCo, and BYOL.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">PyTorch</span>
+                        <span class="tech-tag">CUDA</span>
+                        <span class="tech-tag">Vision Transformers</span>
+                        <span class="tech-tag">Contrastive Learning</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/AmanSwar/TorchSSL" class="btn btn-secondary">GitHub</a>
+                        <a href="project/torchssl.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <!-- RetinaSys -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">Medical AI</div>
+                    </div>
+                    <h3 class="project-title">RetinaSys</h3>
+                    <p class="project-description">
+                        Production-ready diabetic retinopathy detection system optimized for edge deployment. Combines
+                        DINOv2 features with efficient architectures, achieving 90.73% QWK and 90.85% AUC. Features INT8
+                        quantization reducing memory footprint by 60% while maintaining clinical accuracy.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">DINOv2</span>
+                        <span class="tech-tag">OpenVINO</span>
+                        <span class="tech-tag">SHAP</span>
+                        <span class="tech-tag">Medical Imaging</span>
+                        <span class="tech-tag">Edge Deployment</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/AmanSwar/DR-detection" class="btn btn-secondary">GitHub</a>
+                        <a href="project/retinasys.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <!-- SearchSphere -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">AI Search</div>
+                    </div>
+                    <h3 class="project-title">SearchSphere</h3>
+                    <p class="project-description">
+                        A standalone, AI-powered semantic search engine that runs locally on a user's machine. 
+                        It understands the meaning behind a user's query to find relevant documents and images.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">MobileCLIP</span>
+                        <span class="tech-tag">FAISS</span>
+                        <span class="tech-tag">MobileBERT</span>
+                        <span class="tech-tag">Rich</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="#" class="btn btn-secondary">GitHub</a>
+                        <a href="project/searchsphere.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <!-- Additional projects can be added here -->
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">LLM Optimization</div>
+                    </div>
+                    <h3 class="project-title">FastInference</h3>
+                    <p class="project-description">
+                        High-performance inference engine for transformer models. Implements advanced optimization
+                        techniques including KV-cache optimization, attention fusion, and dynamic batching. Achieves 3x
+                        speedup over standard implementations while maintaining numerical stability.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">C++</span>
+                        <span class="tech-tag">CUDA</span>
+                        <span class="tech-tag">TensorRT</span>
+                        <span class="tech-tag">Transformers</span>
+                        <span class="tech-tag">Flash Attention</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="#" class="btn btn-secondary">GitHub</a>
+                        <a href="project/fastinference.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-category">Computer Vision</div>
+                    </div>
+                    <h3 class="project-title">EfficientVision</h3>
+                    <p class="project-description">
+                        Lightweight computer vision pipeline optimized for mobile deployment. Features neural
+                        architecture search, progressive training, and adaptive inference. Reduces model size by 80%
+                        while maintaining competitive accuracy on ImageNet classification.
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">PyTorch Mobile</span>
+                        <span class="tech-tag">Neural Architecture Search</span>
+                        <span class="tech-tag">Quantization</span>
+                        <span class="tech-tag">Mobile Optimization</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="#" class="btn btn-secondary">GitHub</a>
+                        <a href="project/efficientvision.html" class="btn btn-primary">Detailed View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Theme toggle functionality
+        let currentTheme = 'dark';
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+
+        html.setAttribute('data-theme', currentTheme);
+        updateThemeToggle(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', currentTheme);
+            updateThemeToggle(currentTheme);
+            updateHeaderBackground();
+        });
+
+        function updateThemeToggle(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        function updateHeaderBackground() {
+            const header = document.querySelector('.header');
+            const scrollY = window.scrollY;
+            
+            if (scrollY > 50) {
+                header.style.background = currentTheme === 'dark'
+                    ? 'rgba(10, 10, 11, 0.95)'
+                    : 'rgba(255, 255, 255, 0.95)';
+            } else {
+                header.style.background = currentTheme === 'dark'
+                    ? 'rgba(10, 10, 11, 0.8)'
+                    : 'rgba(255, 255, 255, 0.8)';
+            }
+        }
+
+        window.addEventListener('scroll', updateHeaderBackground);
+
+        // Project card hover effects
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+
+</html>
