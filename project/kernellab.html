@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KernelLab - Aman Swar</title>
+    <link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">Aman Swar</a>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button id="theme-switcher">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="project-content">
+            <div class="container">
+                <a href="../projects.html" class="btn">Go Back</a>
+                <h2>KernelLab: Technical Documentation</h2>
+
+                <h3>1. Introduction</h3>
+                <p>KernelLab is a library of high-performance GPU kernels written in CUDA and Triton. It serves as a practical guide and reference for GPU programming, demonstrating various optimization strategies for common computational workloads in deep learning and scientific computing.</p>
+                <p>The project is structured to provide a clear progression from simple, "naïve" implementations to highly optimized versions that leverage the full capabilities of modern GPU architectures. Each kernel is self-contained and comes with its own set of benchmarks, allowing for a clear understanding of the performance impact of each optimization.</p>
+
+                <h3>2. Core Concepts in GPU Optimization</h3>
+                <p>The optimizations implemented in KernelLab are based on the following core concepts of GPU programming:</p>
+                <ul>
+                    <li><strong>Memory Hierarchy:</strong> GPUs have a complex memory hierarchy, consisting of global memory, shared memory, and registers. Efficiently managing data movement between these memory spaces is crucial for performance.</li>
+                    <li><strong>Parallelism:</strong> GPUs are massively parallel processors. Structuring code to expose as much parallelism as possible is key to achieving high throughput.</li>
+                    <li><strong>Memory Coalescing:</strong> Global memory accesses are most efficient when they are "coalesced," meaning that threads in a warp access contiguous memory locations.</li>
+                    <li><strong>Shared Memory:</strong> Shared memory is a small, fast, on-chip memory that can be used to cache frequently accessed data, reducing reliance on slower global memory.</li>
+                    <li><strong>Warp-Level Primitives:</strong> A warp is a group of 32 threads that execute in lockstep. CUDA provides a set of "warp-level primitives" (e.g., <code>__shfl_down_sync</code>) that allow for efficient communication and data sharing between threads in a warp.</li>
+                    <li><strong>Tensor Cores:</strong> Modern NVIDIA GPUs include specialized hardware units called Tensor Cores that are designed to accelerate matrix multiplication and other deep learning operations.</li>
+                </ul>
+
+                <h3>3. Implemented Kernels and Optimizations</h3>
+                <h4>3.1 CUDA Kernels</h4>
+                <h5>3.1.1 Convolution Kernels</h5>
+                <ul>
+                    <li><strong>2D Convolution (Conv2D):</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> A straightforward implementation with high global memory traffic and redundant data loads.</li>
+                            <li><strong>Tiled Shared Memory:</strong> Divides the input and filter into tiles that are loaded into shared memory, reducing global memory accesses.</li>
+                            <li><strong>Memory Coalescing:</strong> Optimizes memory access patterns to ensure that threads in a warp access contiguous memory locations.</li>
+                            <li><strong>Tensor Cores (WMMA):</strong> Utilizes the <code>nvcuda::wmma</code> API to leverage Tensor Cores for the matrix multiplication at the heart of the convolution operation.</li>
+                        </ul>
+                    </li>
+                    <li><strong>3D Convolution (Conv3D):</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> Similar to the 2D naïve implementation, but extended to three dimensions.</li>
+                            <li><strong>Shared Memory:</strong> Caches 3D data blocks in shared memory to improve data reuse.</li>
+                            <li><strong>Tiled & Register Blocking:</strong> Further reduces memory latency by blocking data in registers and tiles.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3.1.2 Matrix & Reduction Operations</h4>
+                <ul>
+                    <li><strong>Matrix Transpose:</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> A simple implementation that suffers from non-coalesced memory accesses.</li>
+                            <li><strong>Shared Memory Tiling:</strong> Uses shared memory to perform the transpose in-place, enabling coalesced writes to global memory.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Matrix Multiplication (GEMM):</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> A basic implementation with O(N^3) complexity and high global memory traffic.</li>
+                            <li><strong>Tiled:</strong> Caches matrix tiles in shared memory to reduce global memory accesses.</li>
+                            <li><strong>Register Blocking:</strong> Uses registers to store a sub-matrix, further improving data reuse.</li>
+                            <li><strong>Warp-Level Tiling:</strong> Optimizes data exchange between threads at the warp level.</li>
+                            <li><strong>Tensor Cores (WMMA):</strong> Leverages Tensor Cores for maximum performance.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reduction (Sum and Max):</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> A simple parallel reduction that suffers from thread divergence.</li>
+                            <li><strong>Branchless Reduction:</strong> Avoids thread divergence by using predicated execution.</li>
+                            <li><strong>Warp-Level Reduction:</strong> Uses warp shuffle intrinsics for a highly efficient, branchless reduction within a warp.</li>
+                            <li><strong>Vectorized Reduction:</strong> Uses vector types like <code>float4</code> to perform multiple reductions in parallel.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3.1.3 Element-wise & Activation Functions</h4>
+                <ul>
+                    <li><strong>ReLU, Sigmoid, SwiGLU:</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> Simple element-wise operations.</li>
+                            <li><strong>Coalesced Memory Access:</strong> Ensures that memory accesses are coalesced.</li>
+                            <li><strong>Vectorized Execution:</strong> Uses vector types (<code>float4</code>, <code>float2</code>) to process multiple elements per thread.</li>
+                        </ul>
+                    </li>
+                    <li><strong>SoftMax:</strong>
+                        <ul>
+                            <li><strong>Naïve:</strong> A basic implementation that is inefficient due to redundant memory accesses.</li>
+                            <li><strong>Shared Memory Optimization:</strong> Caches data in shared memory to reduce global memory traffic.</li>
+                            <li><strong>Warp-Level Reduction:</strong> Uses warp shuffle intrinsics for the reduction step.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3.1.4 Image Processing Kernels</h4>
+                <ul>
+                    <li><strong>Greyscale Conversion & Image Blurring:</strong>
+                        <ul>
+                            <li>These kernels demonstrate how to apply the same optimization principles (shared memory, coalescing, vectorization) to image processing tasks.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3.1.5 Sorting Kernels</h4>
+                <ul>
+                    <li><strong>Bitonic Sort & Radix Sort:</strong>
+                        <ul>
+                            <li>These kernels showcase how to implement classic sorting algorithms on the GPU.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>3.2 Triton Kernels</h4>
+                <p>Triton is a Python-based language and compiler for writing highly efficient GPU kernels. The Triton kernels in KernelLab provide a higher-level abstraction compared to CUDA, while still achieving competitive performance.</p>
+                <ul>
+                    <li><strong>Vector Addition, Matrix Multiplication (GEMM), Softmax, Layer Normalization, GeGLU, RoPE Embedding, Flash Attention, SwiGLU:</strong>
+                        <ul>
+                            <li>These kernels are implemented using Triton's high-level abstractions, which automatically handle many of the low-level optimization details.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>4. Benchmarking and Performance</h3>
+                <p>KernelLab includes a suite of benchmarks for comparing the performance of the different kernel implementations. The benchmarks are written in Python and use the <code>torch</code> library for creating and managing GPU tensors.</p>
+                <p>The results of the benchmarks are presented in the <code>README.md</code> file and in the <code>benchmarks</code> directory.</p>
+
+                <h3>5. How to Use KernelLab</h3>
+                <p>The CUDA kernels are exposed to Python via Pybind11. Each kernel has a <code>setup.py</code> file that can be used to build and install the Python bindings.</p>
+                <p>The Triton kernels can be used directly from Python.</p>
+
+                <h3>6. Future Work</h3>
+                <p>The <code>TODO.md</code> file lists the kernels and features that are planned for future development.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Aman Swar. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+
+        // Set default theme to dark
+        body.classList.add('dark-mode');
+        themeSwitcher.textContent = '☀️';
+
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+            } else {
+                themeSwitcher.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

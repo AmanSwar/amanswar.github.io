@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aman Swar - AI Researcher</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">Aman Swar</a>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button id="theme-switcher">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>Aman Swar</h1>
+                <p class="tagline">AI Systems Engineer obsessed with performance</p>
+                <p>I can work across the ML stack — from research prototyping to building end-to-end systems to kernel-level GPU code and distributed training pipelines.</p>
+                <a href="../resume.pdf" class="btn">View Resume</a>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>I am an undergrad AI systems engineer who hates slow code and works at the intersection of low-level systems engineering, high-performance computing, and modern machine learning.
+My experience spans the entire machine learning lifecycle, from initial research and prototyping to the development and deployment of high-performance, scalable systems. 
+Have made multiple projects across the stack from reading research papers to making custom kernels and everything in between.
+Currently diving deep into Computer Architecture , OS and compilers cuz I love those stuff !!! + I love making projects !!! Check out my projects tab to see my work !
+</p>
+                <!-- <p>I am a passionate AI researcher with a strong focus on performance and optimization. My experience spans the entire machine learning lifecycle, from initial research and prototyping to the development and deployment of high-performance, scalable systems. I have a deep understanding of GPU architecture and enjoy writing custom kernels to squeeze out every last drop of performance. I am always eager to learn new things and take on challenging problems.</p> -->
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <h2>Featured Projects</h2>
+                <div class="project-grid">
+                    <div class="project-card">
+                        <h3>TorchPP</h3>
+                        <p>A powerful extension library for PyTorch, designed to supercharge your deep learning workflows.</p>
+                        <a href="project/kernellab.html" class="btn">View Details</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>DistJax</h3>
+                        <p>A powerful and flexible library for JAX that simplifies the implementation of distributed training for large-scale neural networks.</p>
+                        <a href="project/distjax.html" class="btn">View Details</a>
+                    </div>
+                    <div class="project-card">
+                        <h3>FastQwen3</h3>
+                        <p>Qwen3 0.6B but faster, achieving 9.25x ++ inference speedup over huggingface baseline</p>
+                        <a href="project/torchpp.html" class="btn">View Details</a>
+                    </div>
+                </div>
+                <div class="view-all-projects">
+                    <a href="projects.html" class="btn">View All Projects</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <p>I'm always open to discussing new opportunities and collaborations. Feel free to reach out to me.</p>
+                <ul>
+                    <li><a href="mailto:p.amanswar@gmail.com">p.amanswar@gmail.com</a></li>
+                    <li><a href="https://github.com/AmanSwar">GitHub</a></li>
+                    <li><a href="https://linkedin.com/in/aman-swar">LinkedIn</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Aman Swar. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+
+        // Set default theme to dark
+        body.classList.add('dark-mode');
+        themeSwitcher.textContent = '☀️';
+
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+            } else {
+                themeSwitcher.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

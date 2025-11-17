@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TorchPP - Aman Swar</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">Aman Swar</a>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button id="theme-switcher">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="project-content">
+            <div class="container">
+                <a href="../projects.html" class="btn">Go Back</a>
+                <h1>TorchPP: The PyTorch Performance Plus Toolkit</h1>
+                <p><code>torchpp</code> is a powerful extension library for PyTorch, designed to supercharge your deep learning workflows. It provides a suite of high-performance CUDA kernels and a powerful distributed training framework to accelerate model performance and simplify scaling.</p>
+                <p>Whether you are working with <strong>Large Language Models (LLMs)</strong>, <strong>Diffusion Models</strong>, <strong>Text-to-Speech (TTS)</strong>, or <strong>Time-Series Models</strong>, <code>torchpp</code> aims to be your go-to library for performance and scalability.</p>
+
+                <h2>Core Pillars</h2>
+                <h3>1. Accelerate Your Models</h3>
+                <p>Boost your model's speed with our collection of high-performance, custom-written CUDA kernels. We leverage libraries like <strong>CUTLASS</strong> to build fused and optimized components that replace standard PyTorch modules, resulting in significant performance gains by reducing memory bandwidth and leveraging hardware-specific features like Tensor Cores.</p>
+                <ul>
+                    <li><strong>Fused Kernels:</strong>
+                        <ul>
+                            <li><strong>Linear + Activation:</strong> Fused <code>Linear</code> layers with <code>GeLU</code> and <code>SiLU</code> activations.</li>
+                            <li><strong>Optimized Normalization:</strong> High-performance <code>LayerNorm</code> and <code>RMSNorm</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Custom Implementations:</strong>
+                        <ul>
+                            <li><strong>Rotary Position Embeddings (RoPE):</strong> An optimized implementation of RoPE.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Attention Variants:</strong> Efficient implementations of various attention mechanisms, including <code>Multi-Head</code>, <code>Multi-Query</code>, <code>Grouped-Query</code>, <code>Sliding-Window</code>, and <code>Cross-Attention</code>, all using <code>flash-attn</code> for maximum performance.</li>
+                </ul>
+
+                <h3>2. Simplify Distributed Training</h3>
+                <p>Move beyond the boilerplate of distributed training. <code>torchpp</code> provides a high-level, easy-to-use <code>DistributedTrainer</code> that handles the complexities of different parallelization strategies, so you can focus on your model.</p>
+                <ul>
+                    <li><strong>Effortless Scaling:</strong> Easily switch between strategies like Data Parallel (DDP), Fully Sharded Data Parallel (FSDP), and hybrid approaches with simple configuration changes.</li>
+                    <li><strong>Out-of-the-Box Functionality:</strong> The trainer includes built-in support for mixed-precision training, gradient accumulation, checkpointing, and more.</li>
+                </ul>
+
+                <h2>How it Works: The <code>torchpp</code> Architecture</h2>
+                <p><code>torchpp</code> achieves its performance by combining a low-level CUDA backend with a high-level Python frontend.</p>
+                <ol>
+                    <li><strong>CUDA Kernels (<code>csrc/</code>):</strong> The core operations are written in C++ and CUDA. These kernels are optimized for specific hardware (e.g., NVIDIA GPUs with Tensor Cores) and data types (currently <code>FP16</code>).</li>
+                    <li><strong>Pybind11 Bindings:</strong> We use <code>pybind11</code> to create Python bindings for the C++ functions. This is handled in the <code>binding.cu</code> files within the <code>csrc</code> directory (e.g., <code>csrc/activation/binding.cu</code>). These bindings compile the CUDA code into Python modules (e.g., <code>linearActvationFp16</code>).</li>
+                    <li><strong>Python API (<code>torchpp/</code>):</strong> The user-facing API is written in Python. The modules in <code>torchpp/</code> (e.g., <code>torchpp.dlops.linear</code>) import the compiled CUDA modules and wrap them in familiar <code>torch.nn.Module</code> classes, making them easy to integrate into existing PyTorch models.</li>
+                </ol>
+                <p>This architecture allows you to get the performance of low-level CUDA programming with the ease of use of a high-level Python library.</p>
+
+                <h2>Installation</h2>
+                <p><strong>Prerequisites:</strong></p>
+                <ul>
+                    <li>A CUDA-enabled GPU.</li>
+                    <li>The <a href="https://github.com/NVIDIA/cutlass" target="_blank">CUTLASS library</a>. Ensure the <code>CUTLASS_PATH</code> environment variable is set.</li>
+                </ul>
+                <pre><code>export CUTLASS_PATH=/path/to/cutlass/include</code></pre>
+                <p><strong>Installation:</strong></p>
+                <pre><code>git clone https://github.com/AmanSwar/TorchPlusPlus.git
+cd torchpp
+pip install .</code></pre>
+
+                <hr>
+
+                <h2>API Reference</h2>
+                <h3>Deep Learning Operations (<code>torchpp.dlops</code>)</h3>
+                <p>This module provides optimized implementations of common deep learning operations. <strong>All modules in <code>torchpp.dlops</code> currently expect <code>FP16</code> tensors.</strong></p>
+
+                <h4>Normalization (<code>torchpp.dlops.normalization</code>)</h4>
+                <p><strong><code>RmsNormFused(nn.Module)</code></strong></p>
+                <p>A high-performance implementation of Root Mean Square Normalization.</p>
+                <ul>
+                    <li><strong>Arguments:</strong>
+                        <ul>
+                            <li><code>normalize_dim_shape</code> (int): The size of the dimension to normalize.</li>
+                            <li><code>eps</code> (float, optional): A small value to avoid division by zero. Defaults to <code>1e-6</code>.</li>
+                            <li><code>dtype</code> (torch.dtype, optional): The data type of the weight. Defaults to <code>torch.float16</code>.</li>
+                            <li><code>device</code> (torch.device, optional): The device of the weight. Defaults to <code>torch.device("cuda")</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Usage:</strong>
+                        <pre><code>import torch
+from torchpp.dlops.normalization import RmsNormFused
+
+norm = RmsNormFused(normalize_dim_shape=256)
+x = torch.randn(16, 128, 256, dtype=torch.float16, device="cuda")
+output = norm(x)</code></pre>
+                    </li>
+                </ul>
+
+                <p><strong><code>LayerNormFused(nn.Module)</code></strong></p>
+                <p>A high-performance implementation of Layer Normalization.</p>
+                <ul>
+                    <li><strong>Arguments:</strong>
+                        <ul>
+                            <li><code>normalize_dim_shape</code> (int): The size of the dimension to normalize.</li>
+                            <li><code>eps</code> (float, optional): A small value to avoid division by zero. Defaults to <code>1e-6</code>.</li>
+                            <li><code>dtype</code> (torch.dtype, optional): The data type of the weight. Defaults to <code>torch.float16</code>.</li>
+                            <li><code>device</code> (torch.device, optional): The device of the weight. Defaults to <code>torch.device("cuda")</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Usage:</strong>
+                        <pre><code>import torch
+from torchpp.dlops.normalization import LayerNormFused
+
+norm = LayerNormFused(normalize_dim_shape=256)
+x = torch.randn(16, 128, 256, dtype=torch.float16, device="cuda")
+output = norm(x)</code></pre>
+                    </li>
+                </ul>
+
+                <h4>Fused Linear Layers (<code>torchpp.dlops.linear</code>)</h4>
+                <p><strong><code>LinearGELU(nn.Module)</code></strong></p>
+                <p>A <code>Linear</code> layer fused with a <code>GELU</code> activation.</p>
+                <ul>
+                    <li><strong>Arguments:</strong>
+                        <ul>
+                            <li><code>in_features</code> (int): Size of each input sample.</li>
+                            <li><code>out_features</code> (int): Size of each output sample.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Usage:</strong>
+                        <pre><code>import torch
+from torchpp.dlops.linear import LinearGELU
+
+layer = LinearGELU(in_features=512, out_features=1024)
+x = torch.randn(32, 512, dtype=torch.float16, device="cuda")
+output = layer(x)</code></pre>
+                    </li>
+                </ul>
+
+                <p><strong><code>LinearSILU(nn.Module)</code></strong></p>
+                <p>A <code>Linear</code> layer fused with a <code>SiLU</code> (Swish) activation.</p>
+                <ul>
+                    <li><strong>Arguments:</strong>
+                        <ul>
+                            <li><code>in_features</code> (int): Size of each input sample.</li>
+                            <li><code>out_features</code> (int): Size of each output sample.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Usage:</strong>
+                        <pre><code>import torch
+from torchpp.dlops.linear import LinearSILU
+
+layer = LinearSILU(in_features=512, out_features=1024)
+x = torch.randn(32, 512, dtype=torch.float16, device="cuda")
+output = layer(x)</code></pre>
+                    </li>
+                </ul>
+
+                <h4>Rotary Position Embeddings (<code>torchpp.dlops.rope</code>)</h4>
+                <p><strong><code>rope_apply(x, cos, sin)</code></strong></p>
+                <p>A functional implementation of Rotary Position Embeddings.</p>
+                <ul>
+                    <li><strong>Arguments:</strong>
+                        <ul>
+                            <li><code>x</code> (torch.Tensor): The input tensor of shape <code>[batch, heads, seq_len, head_dim]</code>.</li>
+                            <li><code>cos</code> (torch.Tensor): The cosine cache of shape <code>[seq_len, head_dim]</code>.</li>
+                            <li><code>sin</code> (torch.Tensor): The sine cache of shape <code>[seq_len, head_dim]</code>.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Returns:</strong> A <code>torch.Tensor</code> with RoPE applied.</li>
+                    <li><strong>Usage:</strong>
+                        <pre><code>import torch
+from torchpp.dlops.rope import rope_apply
+
+# Assume x, cos_cache, and sin_cache are precomputed
+# x: [bs, n_heads, seq_len, head_dim]
+# cos_cache, sin_cache: [seq_len, head_dim]
+output = rope_apply(x, cos_cache, sin_cache)</code></pre>
+                    </li>
+                </ul>
+
+                <h3>Attention Mechanisms (<code>torchpp.attention</code>)</h3>
+                <p>This module provides several efficient attention implementations that leverage <code>flash-attn</code>.</p>
+                <ul>
+                    <li><strong><code>MultiHeadAttention(embed_dim, n_heads, ...)</code></strong>: Standard Multi-Head Attention.</li>
+                    <li><strong><code>GroupedQueryAttention(d_in, num_heads, n_kv_heads, ...)</code></strong>: Grouped-Query Attention.</li>
+                    <li><strong><code>MQA_FA(num_q_heads, embed_dim, ...)</code></strong>: Multi-Query Attention.</li>
+                    <li><strong><code>SlidingWindowAttention(window_size, embed_dim, n_heads, ...)</code></strong>: Sliding Window Attention.</li>
+                    <li><strong><code>CrossAttention(embed_dim, cross_dim, n_heads, ...)</code></strong>: Cross-Attention.</li>
+                </ul>
+                <p>All attention modules follow a similar pattern and are initialized with model dimensions and optional arguments like <code>qknorm</code> and <code>dtype</code>.</p>
+
+                <h3>Distributed Training (<code>torchpp.train.dist_train</code>)</h3>
+                <p><strong><code>DistributedTrainer</code></strong></p>
+                <p>A high-level trainer class to handle the complexities of distributed training.</p>
+                <ul>
+                    <li><strong>Key Arguments:</strong>
+                        <ul>
+                            <li><code>model</code> (nn.Module): The model to be trained.</li>
+                            <li><code>config</code> (TrainingConfig): A dataclass containing all training configurations (strategy, learning rate, checkpoint paths, etc.).</li>
+                            <li><code>optimizer</code> (torch.optim.Optimizer, optional): The optimizer to use. If not provided, an <code>AdamW</code> optimizer is created by default.</li>
+                            <li><code>lr_sched</code> (optional): A learning rate scheduler.</li>
+                            <li><code>loss_function</code> (Callable, optional): The loss function. Defaults to cross-entropy loss.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Key Methods:</strong>
+                        <ul>
+                            <li><code>train(train_dataloader, eval_dataloader, num_epochs)</code>: Starts the training loop.</li>
+                            <li><code>evaluate(eval_dataloader)</code>: Runs the evaluation loop.</li>
+                            <li><code>_save_checkpoint()</code>: Saves a model checkpoint.</li>
+                            <li><code>load_checkpoint(path)</code>: Loads a model checkpoint.</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Future Vision & Roadmap</h2>
+                <p>We have an ambitious roadmap to make <code>torchpp</code> an indispensable tool for PyTorch developers:</p>
+                <ol>
+                    <li><strong>Quantization Support:</strong> Integration of popular quantization techniques like AWQ, GPTQ, and others to further boost inference performance.</li>
+                    <li><strong>Faster Training with Custom Backward Kernels:</strong> Implementation of custom backward passes for all our fused kernels to accelerate the training process.</li>
+                    <li><strong>Expanded Kernel Library:</strong> Introduction of new fused kernels for Diffusion, Convolution-based models, and RNN-based models.</li>
+                </ol>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Aman Swar. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+
+        // Set default theme to dark
+        body.classList.add('dark-mode');
+        themeSwitcher.textContent = '☀️';
+
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+            } else {
+                themeSwitcher.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

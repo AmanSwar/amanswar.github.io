@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUDA GEMM Implementation - Aman Swar</title>
+    <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">Aman Swar</a>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button id="theme-switcher">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="project-content">
+            <div class="container">
+                <a href="../projects.html" class="btn">Go Back</a>
+                <h1>Comprehensive Documentation for CUDA GEMM Implementation</h1>
+                <p>This document provides a comprehensive overview of the CUDA GEMM project, a collection of General Matrix Multiplication (GEMM) kernels implemented in CUDA C++. The project explores various optimization techniques, from basic naive implementations to highly optimized kernels that leverage NVIDIA's Tensor Cores.</p>
+
+                <h2>1. Project Overview</h2>
+                <p>The primary goal of this project is to explore and implement various GEMM optimization techniques on NVIDIA GPUs. It serves as a practical guide to understanding how to achieve high performance in CUDA programming by progressively optimizing a common and critical operation like GEMM. The performance of each implemented kernel is benchmarked against NVIDIA's highly optimized cuBLAS library.</p>
+
+                <h2>2. Repository Structure</h2>
+                <p>The repository is organized as follows:</p>
+                <ul>
+                    <li><strong><code>src/</code></strong>: Contains the source code for all the GEMM kernels.
+                        <ul>
+                            <li><strong><code>basic/</code></strong>: Basic, easy-to-understand GEMM implementations.
+                                <ul>
+                                    <li><code>naive_gemm.cuh</code>: A simple, unoptimized GEMM kernel.</li>
+                                    <li><code>tiled_gemm.cuh</code>: A GEMM kernel that uses shared memory to reduce global memory accesses.</li>
+                                    <li><code>optimum_tiled_gemm.cuh</code>: A more optimized tiled GEMM kernel.</li>
+                                </ul>
+                            </li>
+                            <li><strong><code>cublas/</code></strong>: A wrapper for the cuBLAS library.
+                                <ul>
+                                    <li><code>cublas_gemm.cuh</code>: A wrapper for <code>cublasSgemm</code> and <code>cublasGemmEx</code>.</li>
+                                </ul>
+                            </li>
+                            <li><strong><code>cute/</code></strong>: An implementation using the CUTE library.
+                                <ul>
+                                    <li><code>sgemm_cute_naive.cuh</code>: A GEMM kernel implemented using the CUTE library.</li>
+                                </ul>
+                            </li>
+                            <li><strong><code>mma/</code></strong>: A kernel that uses the <code>mma.sync</code> PTX instruction.
+                                <ul>
+                                    <li><code>hgemm_m16n8k16.cuh</code>: A GEMM kernel that uses Tensor Cores directly via PTX.</li>
+                                </ul>
+                            </li>
+                            <li><strong><code>wmma/</code></strong>: Kernels that use the <code>nvcuda::wmma</code> API for Tensor Core acceleration.
+                                <ul>
+                                    <li><code>wmma_gemm_naive_fp16.cuh</code>: A basic WMMA kernel.</li>
+                                    <li><code>hgemm_wmma_m16n16k16.cuh</code>: A more structured version of the naive WMMA kernel.</li>
+                                    <li><code>hgemm_wmma_m16n16k16_mma4x2.cuh</code>: Increases the amount of work per block.</li>
+                                    <li><code>hgemm_wmma_mnk16_mma4x2_warp2x4.cuh</code>: Further increases the work per block.</li>
+                                    <li><code>hgemm_wmma_mnk16_m4x2_dbuf_async.cuh</code>: The most advanced kernel, using double buffering and asynchronous data transfers.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong><code>inc/</code></strong>: Header files.
+                        <ul>
+                            <li><code>launch.h</code>: Contains function declarations for launching the kernels.</li>
+                            <li><code>util.cuh</code>: Utility functions for benchmarking, verification, and initialization.</li>
+                        </ul>
+                    </li>
+                    <li><strong><code>benchmark.py</code></strong>: A Python script to plot the benchmark results.</li>
+                    <li><strong><code>CMakeLists.txt</code></strong>: The build script for the project.</li>
+                    <li><strong><code>README.md</code></strong>: A brief overview of the project.</li>
+                    <li><strong><code>docs.md</code></strong>: This documentation file.</li>
+                </ul>
+
+                <h2>3. Kernels Implemented</h2>
+                <h3>3.1. Basic Kernels</h3>
+                <h4><code>naive_gemm.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This is the most straightforward implementation of GEMM. Each thread computes a single element of the output matrix <code>C</code>. It involves a simple triple-nested loop structure.</li>
+                    <li><strong>Performance</strong>: This kernel is the slowest and is used to demonstrate the baseline performance without any optimizations.</li>
+                </ul>
+                <h4><code>tiled_gemm.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel introduces the concept of tiling (or blocking). It loads small tiles of the input matrices <code>A</code> and <code>B</code> into shared memory to reduce global memory access and exploit data reuse. Each thread block computes a tile of the output matrix <code>C</code>.</li>
+                    <li><strong>Performance</strong>: Tiling significantly improves performance compared to the naive kernel by reducing the number of costly global memory accesses.</li>
+                </ul>
+                <h4><code>optimum_tiled_gemm.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel is a more optimized version of the tiled GEMM. It further refines the tiling strategy and memory access patterns to improve performance.</li>
+                    <li><strong>Performance</strong>: This kernel offers better performance than the basic tiled GEMM through more efficient use of shared memory and thread-level parallelism.</li>
+                </ul>
+
+                <h3>3.2. cuBLAS Kernel</h3>
+                <h4><code>cublas_gemm.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This is not a custom kernel but a wrapper around NVIDIA's highly optimized <code>cublasSgemm</code> and <code>cublasGemmEx</code> functions. It is used as the gold standard for performance comparison.</li>
+                    <li><strong>Performance</strong>: cuBLAS provides a highly optimized GEMM implementation that is difficult to match. It serves as the primary benchmark for our custom kernels.</li>
+                </ul>
+
+                <h3>3.3. CUTE Kernel</h3>
+                <h4><code>sgemm_cute_naive.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel is an implementation of GEMM using NVIDIA's CUTE (CUDA Unbound Tensors and Execution) library. CUTE provides a powerful and flexible way to describe and manipulate tensors, which simplifies the development of complex kernels.</li>
+                    <li><strong>Performance</strong>: This kernel demonstrates the use of CUTE for GEMM. While it is a "naive" implementation within the CUTE framework, it can achieve good performance due to CUTE's ability to generate efficient code.</li>
+                </ul>
+
+                <h3>3.4. MMA Kernel</h3>
+                <h4><code>hgemm_m16n8k16.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel utilizes the <code>mma.sync.aligned.m16n8k16</code> PTX instruction, which is a direct way to use Tensor Cores for matrix multiplication. It performs a 16x8x16 matrix multiply-accumulate operation.</li>
+                    <li><strong>Performance</strong>: By using Tensor Cores, this kernel achieves a significant performance boost over the basic kernels. It's a more direct, lower-level approach compared to the WMMA API.</li>
+                </ul>
+
+                <h3>3.5. WMMA Kernels</h3>
+                <p>These kernels use the <code>nvcuda::wmma</code> API, which provides a C++ interface for using Tensor Cores. The WMMA kernels are progressively optimized.</p>
+                <h4><code>wmma_gemm_naive_fp16.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This is the most basic WMMA kernel. Each warp is responsible for a 16x16 tile of the output matrix. It loads data directly from global memory into fragments and performs the matrix multiplication.</li>
+                    <li><strong>Performance</strong>: This kernel is a simple introduction to WMMA and provides a good performance uplift over non-Tensor Core kernels.</li>
+                </ul>
+                <h4><code>hgemm_wmma_m16n16k16.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: A slightly more structured version of the naive WMMA kernel, with a clearer separation of concerns.</li>
+                    <li><strong>Performance</strong>: Similar to the naive WMMA kernel.</li>
+                </ul>
+                <h4><code>hgemm_wmma_m16n16k16_mma4x2.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel increases the amount of work per block by having each block compute a larger tile of the output matrix (64x32). It uses shared memory to stage the data for the WMMA operations, which improves data reuse and reduces global memory traffic.</li>
+                    <li><strong>Performance</strong>: The use of shared memory and increased work per block leads to a significant performance improvement.</li>
+                </ul>
+                <h4><code>hgemm_wmma_mnk16_mma4x2_warp2x4.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This kernel further increases the work per block to compute a 128x128 tile of the output matrix. This is done to improve occupancy and memory bandwidth utilization.</li>
+                    <li><strong>Performance</strong>: This kernel shows another significant performance jump due to the larger tile size.</li>
+                </ul>
+                <h4><code>hgemm_wmma_mnk16_m4x2_dbuf_async.cuh</code></h4>
+                <ul>
+                    <li><strong>Description</strong>: This is the most advanced kernel in this project. It builds upon the previous kernel by introducing <strong>double buffering</strong> and <strong>asynchronous data transfers</strong> (<code>cp.async</code>).
+                        <ul>
+                            <li><strong>Double Buffering</strong>: Two sets of shared memory buffers are used for <code>A</code> and <code>B</code> tiles. While the GPU is performing computations on one set of buffers, the next set of tiles is being fetched from global memory in the background.</li>
+                            <li><strong>Asynchronous Data Transfers</strong>: The <code>cp.async</code> PTX instruction allows for data to be copied from global to shared memory without blocking the SMs, effectively hiding the memory latency.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Performance</strong>: This kernel achieves the highest performance, coming very close to the performance of cuBLAS. The combination of Tensor Cores, shared memory, large tile sizes, double buffering, and asynchronous data transfers allows for near-optimal utilization of the GPU's resources.</li>
+                </ul>
+
+                <h2>4. Building and Running</h2>
+                <h3>Prerequisites</h3>
+                <ul>
+                    <li>NVIDIA GPU with CUDA support (Compute Capability 8.0+ for Tensor Cores)</li>
+                    <li>CUDA Toolkit</li>
+                    <li>CMake (version 3.18 or higher)</li>
+                </ul>
+                <h3>Building the Project</h3>
+                <ol>
+                    <li>Create a <code>build</code> directory: <code>mkdir build</code></li>
+                    <li>Navigate to the <code>build</code> directory: <code>cd build</code></li>
+                    <li>Run CMake: <code>cmake ..</code></li>
+                    <li>Compile the project: <code>make</code></li>
+                </ol>
+                <h3>Running the Benchmark</h3>
+                <p>After building the project, you can run the benchmark from the <code>build</code> directory:</p>
+                <pre><code>./benchmark</code></pre>
+                <p>This will run all the implemented kernels and print the performance results to the console.</p>
+
+                <h2>5. Benchmark Results</h2>
+                <p>The performance of the implemented kernels was benchmarked against NVIDIA's cuBLAS library. The benchmark was run on an NVIDIA GPU with Tensor Cores.</p>
+                <img src="../assets/benchmark_plot.png" alt="Benchmark Plot">
+                <p>The plot above shows the TFLOPS achieved by each kernel for different matrix sizes. As you can see, the <code>hgemm_wmma_mnk16_m4x2_dbuf_async</code> kernel achieves performance that is very close to cuBLAS, demonstrating the effectiveness of the optimization techniques used.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Aman Swar. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+
+        // Set default theme to dark
+        body.classList.add('dark-mode');
+        themeSwitcher.textContent = '☀️';
+
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+            } else {
+                themeSwitcher.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>

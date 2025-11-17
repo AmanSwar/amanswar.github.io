@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DistJax - Aman Swar</title>
+    <link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="../index.html" class="logo">Aman Swar</a>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../projects.html">Projects</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button id="theme-switcher">🌙</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="project-content">
+            <div class="container">
+                <a href="../projects.html" class="btn">Go Back</a>
+                <h2>DistJax</h2>
+
+                <h3>1. Introduction</h3>
+                <p>DistJax is a powerful and flexible library for JAX that simplifies the implementation of distributed training for large-scale neural networks. It provides high-level abstractions and reusable components for common parallelism strategies, enabling you to scale your models with minimal code changes.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <li><strong>Data Parallelism:</strong> Train your model on multiple devices with data sharding.</li>
+                    <li><strong>Tensor Parallelism:</strong> Shard your model's weights across multiple devices to train models that don't fit on a single device.</li>
+                    <li><strong>Pipeline Parallelism:</strong> Partition your model's layers across multiple devices to train very deep models efficiently.</li>
+                    <li><strong>Asynchronous Communication:</strong> Overlap communication and computation to maximize hardware utilization.</li>
+                    <li><strong>Composable Primitives:</strong> Mix and match different parallelism strategies to create hybrid solutions.</li>
+                </ul>
+
+                <h3>2. Core Concepts</h3>
+                <h4>a. Device Mesh</h4>
+                <p>A core concept in DistJax is the <strong>device mesh</strong>, which is a logical grid of devices (e.g., GPUs or TPUs) that you can use to distribute your model and data. The mesh is defined by a shape and a set of axis names, which you can use to specify how your data and model are sharded.</p>
+                <pre><code>from jax.experimental.maps import Mesh
+import numpy as np
+
+num_devices = 8
+# Create a 1D mesh for data parallelism
+dp_mesh = Mesh(np.arange(num_devices).reshape(num_devices,), ('data',))
+
+# Create a 2D mesh for data and tensor parallelism
+tp_mesh = Mesh(np.arange(num_devices).reshape(4, 2), ('data', 'tensor'))</code></pre>
+
+                <h4>b. Sharding</h4>
+                <p>DistJax uses <code>shard_map</code> and <code>PartitionSpec</code> to control how your data and model are sharded across the device mesh. A <code>PartitionSpec</code> is a tuple that specifies how each dimension of a tensor is sharded across the mesh axes.</p>
+                <pre><code>from jax.experimental.maps import PartitionSpec as P
+
+# Replicate the weights across the 'data' axis
+replicated = P()
+
+# Shard the weights along the 'tensor' axis
+sharded = P('tensor',)</code></pre>
+
+                <h3>3. Parallelism Strategies</h3>
+                <h4>a. Data Parallelism</h4>
+                <p>Data parallelism is the most common and straightforward way to distribute your training. In this strategy, you replicate your model on each device and feed each device a different shard of the input data. Gradients are then averaged across all devices to update the model's weights.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>from DistJax.parallelism.data_parallel import data_parallel_train_step
+from DistJax.models.simple_classifier import SimpleClassifier
+
+# Define your model
+model = SimpleClassifier(num_classes=10)
+
+# Create a data-parallel training step
+train_step = data_parallel_train_step(model)
+
+# Run the training step on sharded data
+sharded_train_step = shard_map(
+    train_step,
+    mesh=dp_mesh,
+    in_specs=(P('data',), P('data',)),
+    out_specs=P()
+)</code></pre>
+
+                <h4>b. Tensor Parallelism</h4>
+                <p>Tensor parallelism is a model parallelism technique where you shard the model's weights across multiple devices. This allows you to train models that are too large to fit on a single device. DistJax provides both synchronous and asynchronous tensor parallelism.</p>
+                <p><strong>Synchronous Tensor Parallelism:</strong></p>
+                <p>In synchronous tensor parallelism, communication is performed using collective operations like <code>all_gather</code> and <code>psum_scatter</code>.</p>
+                <p><strong>Asynchronous Tensor Parallelism:</strong></p>
+                <p>Asynchronous tensor parallelism overlaps communication and computation to hide communication latency. This is achieved using JAX's <code>ppermute</code> operation to pass activations between devices in a ring-like fashion.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>from DistJax.parallelism.tensor_parallel import TPDense
+from DistJax.parallelism.tensor_parallel_async import TPAsyncDense
+
+# Synchronous tensor-parallel dense layer
+dense_layer = TPDense(
+    features=1024,
+    kernel_init=jax.nn.initializers.glorot_normal(),
+    mesh=tp_mesh,
+)
+
+# Asynchronous tensor-parallel dense layer
+async_dense_layer = TPAsyncDense(
+    features=1024,
+    kernel_init=jax.nn.initializers.glorot_normal(),
+    mesh=tp_mesh,
+)</code></pre>
+
+                <h4>c. Pipeline Parallelism</h4>
+                <p>Pipeline parallelism is another model parallelism technique where you partition the layers of your model across multiple devices. The input batch is split into micro-batches, which are fed into the pipeline in a staggered manner to keep all devices active.</p>
+                <p><strong>Example:</strong></p>
+                <pre><code>from DistJax.parallelism.pipeline_parallel import pipeline_parallel_train_step
+from DistJax.models.pp_classifier import PPClassifier
+
+# Define your model
+model = PPClassifier(num_classes=10, num_layers=4)
+
+# Create a pipeline-parallel training step
+train_step = pipeline_parallel_train_step(model, num_micro_batches=4)
+
+# Run the training step
+sharded_train_step = shard_map(
+    train_step,
+    mesh=pp_mesh,
+    in_specs=(P('data',), P('data',)),
+    out_specs=P()
+)</code></pre>
+
+                <h3>4. Models</h3>
+                <p>DistJax provides several example models that demonstrate how to use the different parallelism strategies:</p>
+                <ul>
+                    <li><strong><code>SimpleClassifier</code>:</strong> A basic classifier for demonstrating data parallelism.</li>
+                    <li><strong><code>TPClassifier</code>:</strong> A classifier that uses tensor parallelism.</li>
+                    <li><strong><code>PPClassifier</code>:</strong> A classifier that uses pipeline parallelism.</li>
+                    <li><strong><code>Transformer</code>:</strong> A Transformer model with tensor parallelism.</li>
+                </ul>
+
+                <h3>5. Getting Started</h3>
+                <p>To get started with DistJax, please refer to the <code>README.md</code> file for installation instructions and examples.</p>
+
+                <h3>6. API Reference</h3>
+                <p>The core components of DistJax are located in the <code>DistJax/parallelism</code> directory:</p>
+                <ul>
+                    <li><strong><code>data_parallel.py</code>:</strong> Data parallelism primitives.</li>
+                    <li><strong><code>tensor_parallel.py</code>:</strong> Synchronous tensor parallelism primitives.</li>
+                    <li><strong><code>tensor_parallel_async.py</code>:</strong> Asynchronous tensor parallelism primitives.</li>
+                    <li><strong><code>pipeline_parallel.py</code>:</strong> Pipeline parallelism primitives.</li>
+                    <li><strong><code>sharding.py</code>:</strong> Utilities for sharding.</li>
+                </ul>
+
+                <h3>7. Contributing</h3>
+                <p>Contributions are welcome! Please feel free to open an issue or submit a pull request on our GitHub repository.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Aman Swar. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const themeSwitcher = document.getElementById('theme-switcher');
+        const body = document.body;
+
+        // Set default theme to dark
+        body.classList.add('dark-mode');
+        themeSwitcher.textContent = '☀️';
+
+        themeSwitcher.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeSwitcher.textContent = '☀️';
+            } else {
+                themeSwitcher.textContent = '🌙';
+            }
+        });
+    </script>
+</body>
+</html>
