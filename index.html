@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aman Swar - AI Researcher</title>
+    <title>Aman Swar - AI Systems Engineer | Available for Remote Roles</title>
+    <meta name="description" content="AI Systems Engineer specializing in CUDA optimization and distributed training. Achieved 9.39× inference speedups. Available for remote full-time roles.">
+    <meta property="og:title" content="Aman Swar - AI Systems Engineer">
+    <meta property="og:description" content="Building production-grade ML infrastructure with 5-10× performance improvements">
     <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -14,6 +17,7 @@
                 <ul>
                     <li><a href="index.html">Home</a></li>
                     <li><a href="projects.html">Projects</a></li>
+                    <li><a href="index.html#latest-updates">Blog</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -24,11 +28,19 @@
 
     <main>
         <section id="hero">
-            <div class="container">
-                <h1>Aman Swar</h1>
-                <p class="tagline">AI Systems Engineer obsessed with performance</p>
-                <p>I can work across the ML stack — from research prototyping to building end-to-end systems to kernel-level GPU code and distributed training pipelines.</p>
-                <a href="assets/resume.pdf" class="btn">View Resume</a>
+            <div class="availability-banner">
+                🟢 Available for Remote Full-Time Roles | Open to any Time Zone
+            </div>
+            <h1>Aman Swar</h1>
+            <h2>AI Systems Engineer</h2>
+            <p class="tagline">
+                I build production-grade ML infrastructure that's 5-10× faster. Specialized in inference optimization, custom CUDA kernels, and distributed training systems.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="#projects" class="btn-primary">View Projects</a>
+                <a href="#contact" class="btn-secondary">Hire Me</a>
+                <a href="/assets/resume.pdf" class="btn-outline">Resume</a>
             </div>
         </section>
 
@@ -50,39 +62,73 @@ Currently diving deep into Computer Architecture , OS and compilers cuz I love t
 
         <section id="projects">
             <div class="container">
-                <h2>Featured Projects</h2>
+                <h2>Selected Work</h2>
                 <div class="project-grid">
                     <div class="project-card">
+                        <!-- <div class="project-metric">9.39× faster inference</div> -->
                         <h3>Torch++</h3>
-                        <p>A powerful extension library for PyTorch, designed to supercharge your deep learning workflows.</p>
-                        <a href="project/kernellab.html" class="btn">View Details</a>
+                        <p class="project-description">A powerful extension library for PyTorch, designed to supercharge your deep learning workflows with high-performance CUDA kernels and a distributed training framework.</p>
+                        <div class="tech-stack">
+                            <span class="badge">CUDA</span>
+                            <span class="badge">PyTorch</span>
+                            <span class="badge">C++</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/TorchPlusPlus" class="btn" target="_blank">GitHub</a>
+                            <a href="project/torchpp.html" class="btn">Details</a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <!-- <div class="project-metric">9.25× latency reduction</div> -->
+                        <h3>FastQwen3</h3>
+                        <p class="project-description">Qwen3 0.6B but faster, achieving 9.25x ++ inference speedup over huggingface baseline</p>
+                        <div class="tech-stack">
+                            <span class="badge">CUDA</span>
+                            <span class="badge">Triton</span>
+                            <span class="badge">PyTorch</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/FastQwen3" class="btn" target="_blank">GitHub</a>
+                            <a href="project/fastinference.html" class="btn">Details</a>
+                        </div>
                     </div>
                     <div class="project-card">
                         <h3>DistJax</h3>
-                        <p>A powerful and flexible library for JAX that simplifies the implementation of distributed training for large-scale neural networks.</p>
-                        <a href="project/distjax.html" class="btn">View Details</a>
-                    </div>
-                    <div class="project-card">
-                        <h3>FastQwen3</h3>
-                        <p>Qwen3 0.6B but faster, achieving 9.25x ++ inference speedup over huggingface baseline</p>
-                        <a href="project/torchpp.html" class="btn">View Details</a>
+                        <p class="project-description">A powerful and flexible library for JAX that simplifies the implementation of distributed training for large-scale neural networks.</p>
+                        <div class="tech-stack">
+                            <span class="badge">JAX</span>
+                            <span class="badge">Python</span>
+                            <span class="badge">Distributed Systems</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/AmanSwar/DistJax" class="btn" target="_blank">GitHub</a>
+                            <a href="project/distjax.html" class="btn">Details</a>
+                        </div>
                     </div>
                 </div>
                 <div class="view-all-projects">
-                    <a href="projects.html" class="btn">View All Projects</a>
+                    <a href="projects.html" class="btn-secondary">View All Projects</a>
                 </div>
             </div>
         </section>
 
         <section id="contact">
             <div class="container">
-                <h2>Contact</h2>
-                <p>I'm always open to discussing new opportunities and collaborations. Feel free to reach out to me.</p>
-                <ul>
-                    <li><a href="mailto:p.amanswar@gmail.com">p.amanswar@gmail.com</a></li>
-                    <li><a href="https://github.com/AmanSwar">GitHub</a></li>
-                    <li><a href="https://linkedin.com/in/aman-swar">LinkedIn</a></li>
-                </ul>
+                <h2>Let's Build Faster Systems</h2>
+                <p>I'm actively seeking remote full-time roles in AI systems and performance engineering at US/Europe-based deep tech startups. If you're building ambitious ML infrastructure and need someone to make it faster, let's talk.</p>
+                <div class="cta-buttons">
+                     <a href="mailto:p.amanswar@gmail.com" class="btn-primary">Get in Touch</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://github.com/AmanSwar" target="_blank">GitHub</a>
+                    <a href="https://linkedin.com/in/aman-swar" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </section>
+    <section id="latest-updates">
+            <div class="container">
+                <h2>Blog</h2>
+                <p>Coming soon...</p>
             </div>
         </section>
     </main>
