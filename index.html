@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aman Swar | AI Systems Engineer</title>
-    <meta name="description" content="Full-stack AI Engineer specializing in high-performance ML infrastructure. From research papers to custom CUDA kernels.">
+    <meta name="description"
+        content="Full-stack AI Engineer specializing in high-performance ML infrastructure. From research papers to custom CUDA kernels.">
     <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
     <header>
         <div class="container">
@@ -32,7 +35,8 @@
                     </div>
                     <h1>From Research Papers<br>to <span class="highlight">Fused Kernels</span>.</h1>
                     <p class="hero-tagline">
-                        I'm an AI Systems Engineer who spans the entire stack. I don't just train models; I build the high-performance infrastructure that makes them fly. 
+                        I'm an AI Systems Engineer who spans the entire stack. I don't just train models; I build the
+                        high-performance infrastructure that makes them fly.
                         Specializing in distributed training, inference optimization, and custom CUDA/Triton kernels.
                     </p>
                     <div class="cta-group">
@@ -49,13 +53,18 @@
                     <div class="about-text">
                         <h2>The <span class="highlight">Full Spectrum</span> Engineer</h2>
                         <p>
-                            In the world of AI, performance is everything. But true performance doesn't come from just one layer of the stack. 
-                            It comes from understanding the entire pipeline—from the mathematical intuition in a research paper to the memory access patterns on the GPU.
+                            In the world of AI, performance is everything. But true performance doesn't come from just
+                            one layer of the stack.
+                            It comes from understanding the entire pipeline—from the mathematical intuition in a
+                            research paper to the memory access patterns on the GPU.
                         </p>
                         <p>
-                            I operate across this entire spectrum. I read papers to understand the algorithms, then I dive into the systems level to optimize them. 
-                            Whether it's writing custom CUDA kernels to squeeze out 9x speedups, designing distributed training systems for massive scale, 
-                            or architecting production-ready inference engines, I build systems that are fast, scalable, and robust.
+                            I operate across this entire spectrum. I read papers to understand the algorithms, then I
+                            dive into the systems level to optimize them.
+                            Whether it's writing custom CUDA kernels to squeeze out 9x speedups, designing distributed
+                            training systems for massive scale,
+                            or architecting production-ready inference engines, I build systems that are fast, scalable,
+                            and robust.
                         </p>
                     </div>
                     <div class="skills-container">
@@ -75,6 +84,33 @@
             </div>
         </section>
 
+        <section id="research">
+            <div class="container">
+                <h2>Selected <span class="highlight">Research</span></h2>
+                <div class="project-card">
+                    <span class="project-metric">Research Paper</span>
+                    <h3>Medical Imaging</h3>
+                    <p>
+                        Presenting RetinaSys, an innovative framework designed to overcome critical limitations in medical image analysis through   
+ strong generalization, real-time performance, and clinical interpretability. Leveraging self-supervised
+ MoCo v3 pre-training on diverse datasets, RetinaSys employs a ConvNeXt backbone fine-tuned in a
+ multi-task paradigm, integrating lesion-centric attention, ordinal grade consistency, and domain adaptation.
+ Explainable AI (XAI) techniques, like attention maps, integrated gradients, SHAP, and Monte Carlo
+ dropout, significantly enhance interpretability along with model optimization, which ensures efficient
+ inference on standard CPU hardware. 
+                    </p>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Machine Learning</span>
+                        <span class="tech-badge">Research</span>
+                        <span class="tech-badge">Theory</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="paper/dr.pdf" target="_blank" class="link-item">Read Paper &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="work">
             <div class="container">
                 <h2>Selected <span class="highlight">Engineering</span></h2>
@@ -83,14 +119,16 @@
                     <div class="project-card">
                         <span class="project-metric">9.39x Inference Speedup</span>
                         <h3>Torch++</h3>
-                        <p>A high-performance extension for PyTorch. Implemented custom CUDA kernels and distributed training primitives to supercharge deep learning workflows.</p>
+                        <p>A high-performance extension for PyTorch. Implemented custom CUDA kernels and distributed
+                            training primitives to supercharge deep learning workflows.</p>
                         <div class="tech-stack">
                             <span class="tech-badge">CUDA</span>
                             <span class="tech-badge">C++</span>
                             <span class="tech-badge">PyTorch</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/AmanSwar/TorchPlusPlus" target="_blank" class="link-item">GitHub &rarr;</a>
+                            <a href="https://github.com/AmanSwar/TorchPlusPlus" target="_blank" class="link-item">GitHub
+                                &rarr;</a>
                             <a href="project/torchpp.html" class="link-item">Case Study &rarr;</a>
                         </div>
                     </div>
@@ -99,14 +137,16 @@
                     <div class="project-card">
                         <span class="project-metric">9.25x Latency Reduction</span>
                         <h3>FastQwen3</h3>
-                        <p>Optimized inference engine for Qwen3 0.6B. Leveraged custom Triton kernels and FlashAttention to obliterate baseline Hugging Face performance.</p>
+                        <p>Optimized inference engine for Qwen3 0.6B. Leveraged custom Triton kernels and FlashAttention
+                            to obliterate baseline Hugging Face performance.</p>
                         <div class="tech-stack">
                             <span class="tech-badge">Triton</span>
                             <span class="tech-badge">CUDA</span>
                             <span class="tech-badge">LLM</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/AmanSwar/FastQwen3" target="_blank" class="link-item">GitHub &rarr;</a>
+                            <a href="https://github.com/AmanSwar/FastQwen3" target="_blank" class="link-item">GitHub
+                                &rarr;</a>
                             <a href="project/fastinference.html" class="link-item">Case Study &rarr;</a>
                         </div>
                     </div>
@@ -115,35 +155,39 @@
                     <div class="project-card">
                         <span class="project-metric">Distributed Training</span>
                         <h3>DistJax</h3>
-                        <p>Scalable distributed training library for JAX. Provides high-level abstractions for data and model parallelism, simplifying large-scale model training.</p>
+                        <p>Scalable distributed training library for JAX. Provides high-level abstractions for data and
+                            model parallelism, simplifying large-scale model training.</p>
                         <div class="tech-stack">
                             <span class="tech-badge">JAX</span>
                             <span class="tech-badge">Python</span>
                             <span class="tech-badge">Distributed</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/AmanSwar/DistJax" target="_blank" class="link-item">GitHub &rarr;</a>
+                            <a href="https://github.com/AmanSwar/DistJax" target="_blank" class="link-item">GitHub
+                                &rarr;</a>
                             <a href="project/distjax.html" class="link-item">Case Study &rarr;</a>
                         </div>
                     </div>
-                    
-                     <!-- Project 4 -->
+
+                    <!-- Project 4 -->
                     <div class="project-card">
                         <span class="project-metric">Kernel Optimization</span>
                         <h3>KernelLab</h3>
-                        <p>A comprehensive library of hand-written GPU kernels in CUDA and Triton. Demonstrates advanced optimization strategies like tiling, shared memory caching, and warp-level primitives.</p>
+                        <p>A comprehensive library of hand-written GPU kernels in CUDA and Triton. Demonstrates advanced
+                            optimization strategies like tiling, shared memory caching, and warp-level primitives.</p>
                         <div class="tech-stack">
                             <span class="tech-badge">CUDA</span>
                             <span class="tech-badge">Triton</span>
                             <span class="tech-badge">HPC</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/AmanSwar/KernelLab" target="_blank" class="link-item">GitHub &rarr;</a>
+                            <a href="https://github.com/AmanSwar/KernelLab" target="_blank" class="link-item">GitHub
+                                &rarr;</a>
                             <a href="project/kernellab.html" class="link-item">Case Study &rarr;</a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div style="text-align: center; margin-top: 48px;">
                     <a href="projects.html" class="btn btn-secondary">View All Projects</a>
                 </div>
@@ -154,11 +198,12 @@
             <div class="container">
                 <h2>Ready to <span class="highlight">Scale?</span></h2>
                 <p style="max-width: 600px; margin: 0 auto 32px auto;">
-                    I'm actively seeking remote full-time roles in AI systems and performance engineering. 
-                    If you need someone who can bridge the gap between research and high-performance production code, let's talk.
+                    I'm actively seeking remote full-time roles in AI systems and performance engineering.
+                    If you need someone who can bridge the gap between research and high-performance production code,
+                    let's talk.
                 </p>
                 <a href="mailto:p.amanswar@gmail.com" class="btn btn-primary">Get in Touch</a>
-                
+
                 <div style="margin-top: 40px; display: flex; justify-content: center; gap: 24px;">
                     <a href="https://github.com/AmanSwar" target="_blank" class="link-item">GitHub</a>
                     <a href="https://linkedin.com/in/aman-swar" target="_blank" class="link-item">LinkedIn</a>
@@ -174,4 +219,5 @@
         </div>
     </footer>
 </body>
+
 </html>
